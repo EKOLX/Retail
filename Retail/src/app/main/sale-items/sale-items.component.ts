@@ -22,5 +22,7 @@ export class SaleItemsComponent implements OnInit {
     this.saleItems.push(item2);
     let item3 = new SaleItem(3, "Parrot Anafi Drone", 549, 3234567890);
     this.saleItems.push(item3);
+    let item4 = new SaleItem(4, "Sony Home Theatre System", 399.95, 4234567890);
+    this.saleItems.push(item4);
   }
 }
