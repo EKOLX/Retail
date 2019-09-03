@@ -5,6 +5,4 @@ export class SaleItem {
     public price: number,
     public barcode: number
   ) {}
-
-  displayName: string = `${this.name} : ${this.price}$ code: ${this.barcode}`;
 }
