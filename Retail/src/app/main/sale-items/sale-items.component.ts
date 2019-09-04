@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Sale } from "src/app/models/Sales";
 import { SaleItem } from "src/app/models/SaleItem";
-import { SaleDetail } from "src/app/models/SaleDetails";
+import { SaleDetail } from "src/app/models/SaleDetail";
 
 @Component({
   selector: "app-sale-items",
@@ -36,6 +36,8 @@ export class SaleItemsComponent implements OnInit {
     );
     this.sales.items.push(newItem);
     this.productCode = "";
+
+    this.updateTotalAmounts();
   }
 
   onAddItem(id): void {
@@ -82,7 +84,7 @@ export class SaleItemsComponent implements OnInit {
     this.sales.items = items;
 
     const item1 = new SaleDetail(
-      new SaleItem(1, "New Balance sneakers", 99.99, 1234567890),
+      new SaleItem(1, "New Balance sneakers", 100, 1234567890),
       1,
       10
     );
@@ -110,12 +112,18 @@ export class SaleItemsComponent implements OnInit {
         5,
         "MacBook Pro 15-inch 8-core 5.0GHz 32GB 3.2GB/s SSD Storage Touch Bar Touch ID",
         2153,
-        4234567890
+        5234567890
       ),
       1,
       25
     );
     items.push(item5);
+    let item6 = new SaleDetail(
+      new SaleItem(6, "iPhone Xs", 729, 6234567890),
+      1,
+      0
+    );
+    items.push(item6);
 
     this.updateTotalAmounts();
   }
