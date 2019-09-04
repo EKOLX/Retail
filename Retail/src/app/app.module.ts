@@ -1,5 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
+import { FormsModule } from "@angular/forms";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AngularFontAwesomeModule } from "angular-font-awesome";
@@ -16,7 +17,12 @@ import { SaleButtonsComponent } from "./main/sale-buttons/sale-buttons.component
     SaleItemsComponent,
     SaleButtonsComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, AngularFontAwesomeModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    AngularFontAwesomeModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

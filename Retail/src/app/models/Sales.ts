@@ -1,6 +1,6 @@
-import { SaleDetails } from "./SaleDetails";
+import { SaleDetail } from "./SaleDetails";
 
 export class Sale {
   constructor(public id: number, public date: Date) {}
-  items: Array<SaleDetails>;
+  items: Array<SaleDetail>;
 }
