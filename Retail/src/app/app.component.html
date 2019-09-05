@@ -1,10 +1,17 @@
-<div class="container-fluid">
+<style>
+  .flex-fill {
+    flex: 1;
+    overflow: scroll;
+  }
+</style>
+
+<div class="container-fluid d-flex flex-column h-100">
   <div class="row">
     <div class="col-md-12 border border-primary rounded mb-1">
       <app-header></app-header>
     </div>
   </div>
-  <div class="row">
+  <div class="row flex-fill">
     <div class="col-md-9 border border-primary rounded">
       <app-sale-items></app-sale-items>
     </div>

@@ -1,7 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Sale } from "src/app/models/Sales";
-import { SaleItem } from "src/app/models/SaleItem";
-import { SaleDetail } from "src/app/models/SaleDetail";
+import { Sale, SaleDetail, SaleItem } from "src/app/models/sale.model";
 
 @Component({
   selector: "app-sale-items",

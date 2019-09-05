@@ -16,44 +16,38 @@
   }
 </style>
 
-<div class="row">
-  <input
-    type="text"
-    class="form-control m-1 bg-secondary text-white"
-    placeholder="SCAN OR ENTER PRODUCT"
-    (keyup.enter)="onProductEnter($event)"
-    [(ngModel)]="productCode"
-  />
-</div>
-<div *ngFor="let item of sales.items" class="p-2">
+<div style="overflow-y: scroll; overflow-x: hidden;">
+  <div class="col-md-9">
+    <input type="text" class="form-control m-1 bg-secondary text-white" placeholder="SCAN OR ENTER PRODUCT"
+      (keyup.enter)="onProductEnter($event)" [(ngModel)]="productCode" />
+  </div>
+  <div class="p-2" *ngFor="let item of sales.items">
+    <div class="row">
+      <div class="col-md-9">
+        <p class="form-control bg-success text-white">{{ item.displayName }}</p>
+      </div>
+      <div class="col-md-1">
+        <span class="badge badge-info w-75 h-50 p-2">{{ item.quantity }}</span>
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-primary mr-1" (click)="onAddItem(item.itemDetail.id)">
+          <i class="fa fa-plus-circle"></i>
+        </button>
+        <button class="btn btn-danger" (click)="onRemoveItem(item.itemDetail.id)">
+          <i class=" fa fa-minus-circle"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <hr style="border: 1px solid green; border-radius: 2px;" />
   <div class="row">
     <div class="col-md-9">
-      <p class="form-control bg-success text-white">{{ item.displayName }}</p>
+      <p class="font-weight-bold">Subtotal: {{ subTotal }} $</p>
+      <p class="font-weight-bold">Discount: {{ totalDiscount }} $</p>
     </div>
-    <div class="col-md-1">
-      <span class="badge badge-info w-75 h-50 p-2">{{ item.quantity }}</span>
+    <div class="col-md-3">
+      <p class="text-uppercase font-weight-bold">Total</p>
+      <p class="font-weight-bold">{{ total }} $</p>
     </div>
-    <div class="col-md-2">
-      <button
-        class="btn btn-primary mr-1"
-        (click)="onAddItem(item.itemDetail.id)"
-      >
-        <i class="fa fa-plus-circle"></i>
-      </button>
-      <button class="btn btn-danger" (click)="onRemoveItem(item.itemDetail.id)">
-        <i class=" fa fa-minus-circle"></i>
-      </button>
-    </div>
-  </div>
-</div>
-<hr style="border: 1px solid green; border-radius: 2px;" />
-<div class="row">
-  <div class="col-md-9">
-    <p class="font-weight-bold">Subtotal: {{ subTotal }} $</p>
-    <p class="font-weight-bold">Discount: {{ totalDiscount }} $</p>
-  </div>
-  <div class="col-md-3">
-    <p class="text-uppercase font-weight-bold">Total</p>
-    <p class="font-weight-bold">{{ total }} $</p>
   </div>
 </div>

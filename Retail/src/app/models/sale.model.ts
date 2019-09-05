@@ -1,4 +1,16 @@
-import { SaleItem } from "./SaleItem";
+export class Sale {
+  constructor(public id: number, public date: Date) {}
+  items: Array<SaleDetail>;
+}
+
+export class SaleItem {
+  constructor(
+    public id: number,
+    public name: string,
+    public price: number,
+    public barcode: number
+  ) {}
+}
 
 export class SaleDetail {
   constructor(
@@ -24,4 +36,9 @@ export class SaleDetail {
       this.discount > 0 ? -this.discount + "%" : ""
     } - barcode: ${this.itemDetail.barcode}`;
   }
+}
+
+export class ItemImage {
+  itemId: number;
+  imageUrl: string;
 }
