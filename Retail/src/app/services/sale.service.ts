@@ -37,13 +37,25 @@ export class SaleService {
     );
     items.push(item2);
     let item3 = new SaleDetail(
-      new SaleItem(3, "Parrot Anafi Drone", 549, 3234567890),
+      new SaleItem(
+        3,
+        "Parrot Anafi Drone",
+        549,
+        3234567890,
+        "./assets/parrot_anafi_drone.jpg"
+      ),
       1,
       15
     );
     items.push(item3);
     let item4 = new SaleDetail(
-      new SaleItem(4, "Sony Home Theatre System", 399.95, 4234567890),
+      new SaleItem(
+        4,
+        "Sony Home Theatre System",
+        399.95,
+        4234567890,
+        "./assets/sony_home_theatre_system.jpg"
+      ),
       1,
       20
     );
@@ -53,14 +65,15 @@ export class SaleService {
         5,
         "MacBook Pro 15-inch 8-core 5.0GHz 32GB 3.2GB/s SSD Storage Touch Bar Touch ID",
         2153,
-        5234567890
+        5234567890,
+        "./assets/macBook_pro_15_inch.jpg"
       ),
       1,
       25
     );
     items.push(item5);
     let item6 = new SaleDetail(
-      new SaleItem(6, "iPhone Xs", 729, 6234567890),
+      new SaleItem(6, "iPhone Xs", 729, 6234567890, "./assets/iPhone_Xs.jpg"),
       1,
       0
     );
