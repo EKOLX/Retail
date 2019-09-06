@@ -3,7 +3,7 @@ export class Sale {
   items: Array<SaleDetail>;
 }
 
-export class SaleItem {
+export class Item {
   constructor(
     public id: number,
     public name: string,
@@ -15,7 +15,7 @@ export class SaleItem {
 
 export class SaleDetail {
   constructor(
-    public itemDetail: SaleItem,
+    public itemDetail: Item,
     public quantity: number,
     public discount: number
   ) {}

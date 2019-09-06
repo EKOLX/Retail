@@ -1,29 +1,38 @@
-<h6>Ticket № {{ticketNumber}}</h6>
+<h6>Bill № {{ billNumber }}</h6>
 <div class="row">
-    <div class="col-md-12">
-        <img src="{{itemImageUrl}}" onerror="this.src='./assets/empty.png'" alt="Select an item to see image"
-            class="rounded img-responsive w-100 h-100" />
-        <div *ngIf="!itemImageUrl" class="carousel-caption">
-            <p class="text-info text-center font-weight-bold">Select an item to see image</p>
-        </div>
+  <div class="col-md-12">
+    <img
+      src="{{ itemImageUrl }}"
+      onerror="this.src='./assets/empty.png'"
+      alt="Select an item to see image"
+      class="rounded img-responsive w-100 h-100"
+    />
+    <div *ngIf="!itemImageUrl" class="carousel-caption">
+      <p class="text-info text-center font-weight-bold">
+        Select an item to see image
+      </p>
     </div>
+  </div>
+  <div class="col-md-12">
+    <h5 class="font-weight-bold">{{ itemName }}</h5>
+  </div>
 </div>
 <div class="row">
-    <div class="col-md-6 p-1">
-        <button type="button" class="btn btn-success w-100">Empty button</button>
-    </div>
-    <div class="col-md-6 p-1">
-        <button type="button" class="btn btn-success w-100">Empty button</button>
-    </div>
-    <div class="col-md-6 p-1">
-        <button type="button" class="btn btn-success w-100">Complete list</button>
-    </div>
-    <div class="col-md-6 p-1">
-        <button type="button" class="btn btn-success w-100">Incomplete list</button>
-    </div>
+  <div class="col-md-6 p-1">
+    <button type="button" class="btn btn-success w-100">Empty button</button>
+  </div>
+  <div class="col-md-6 p-1">
+    <button type="button" class="btn btn-success w-100">Empty button</button>
+  </div>
+  <div class="col-md-6 p-1">
+    <button type="button" class="btn btn-success w-100">Complete list</button>
+  </div>
+  <div class="col-md-6 p-1">
+    <button type="button" class="btn btn-success w-100">Incomplete list</button>
+  </div>
 </div>
 <div class="row">
-    <div class="col-md-12 p-1">
-        <button type="button" class="btn btn-success w-100">Complete</button>
-    </div>
+  <div class="col-md-12 p-1">
+    <button type="button" class="btn btn-success w-100">Complete</button>
+  </div>
 </div>

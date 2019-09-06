@@ -17,19 +17,42 @@
 </style>
 
 <div style="overflow-y: scroll; overflow-x: hidden;">
-  <div class="col-md-9">
-    <input type="text" class="form-control m-1 bg-secondary text-white" placeholder="SCAN OR ENTER PRODUCT"
-      (keyup.enter)="onProductEnter($event)" [(ngModel)]="productCode" />
+  <div class="row mt-1 mb-2">
+    <div class="col-md-9">
+      <input
+        type="text"
+        class="form-control bg-secondary text-white"
+        placeholder="SCAN OR ENTER PRODUCT"
+        (keyup.enter)="onItemEnter($event)"
+        [(ngModel)]="itemCode"
+      />
+    </div>
+    <div class="col-md-3">
+      <button
+        class="btn btn-success w-100"
+        (click)="onItemEnter($event)"
+        [disabled]="!itemCode"
+      >
+        ENTER
+      </button>
+    </div>
   </div>
   <div class="row" *ngFor="let item of sale.items">
-    <div class="col-md-9" style="cursor: pointer" (click)="onItemSelect(item.itemDetail.id)">
-      <p class="form-control bg-success text-white">{{ item.displayName }}</p>
+    <div
+      class="col-md-9"
+      style="cursor: pointer"
+      (click)="onItemSelect(item.itemDetail.id)"
+    >
+      <p class="form-control bg-light text-dark">{{ item.displayName }}</p>
     </div>
     <div class="col-md-1">
       <span class="badge badge-info text-center p-2">{{ item.quantity }}</span>
     </div>
     <div class="col-md-2">
-      <button class="btn btn-primary mr-1" (click)="onAddItem(item.itemDetail.id)">
+      <button
+        class="btn btn-primary mr-1"
+        (click)="onAddItem(item.itemDetail.id)"
+      >
         <i class="fa fa-plus-circle"></i>
       </button>
       <button class="btn btn-danger" (click)="onRemoveItem(item.itemDetail.id)">

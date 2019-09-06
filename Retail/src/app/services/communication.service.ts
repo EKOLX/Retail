@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
 import { Subject, Observable } from "rxjs";
-import { Sale } from "../models/sale.model";
+import { Sale, Item } from "../models/sale.model";
 
 @Injectable({
   providedIn: "root"
 })
 export class CommunicationService {
   private saleSubject = new Subject<Sale>();
-  private itemSubject = new Subject<string>();
+  private itemSubject = new Subject<Item>();
 
   sendSale(message: Sale): void {
     this.saleSubject.next(message);
@@ -17,15 +17,15 @@ export class CommunicationService {
     return this.saleSubject.asObservable();
   }
 
-  sendImageUrl(url: string): void {
-    this.itemSubject.next(url);
+  sendSaleItem(saleItem: Item): void {
+    this.itemSubject.next(saleItem);
   }
 
-  getImageUrl(): Observable<string> {
+  getSaleItem(): Observable<Item> {
     return this.itemSubject.asObservable();
   }
 
-  clearImageUrl(): void {
+  clearSaleItem(): void {
     this.itemSubject.next();
   }
 }

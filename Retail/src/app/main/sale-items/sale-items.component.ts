@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Sale, SaleDetail, SaleItem } from "src/app/models/sale.model";
+import { Sale, SaleDetail, Item } from "src/app/models/sale.model";
 import { SaleService } from "src/app/services/sale.service";
 import { CommunicationService } from "src/app/services/communication.service";
 
@@ -11,7 +11,7 @@ import { CommunicationService } from "src/app/services/communication.service";
 export class SaleItemsComponent implements OnInit {
   sale: Sale;
   itemDisplayName: string;
-  productCode: string;
+  itemCode: string;
   subTotal: number;
   totalDiscount: number;
   total: number;
@@ -26,30 +26,31 @@ export class SaleItemsComponent implements OnInit {
     this.communicationService.sendSale(this.sale);
   }
 
-  onProductEnter(event: KeyboardEvent) {
+  onItemEnter(event: KeyboardEvent) {
     const value = (<HTMLInputElement>event.target).value;
-    const newItem = new SaleDetail(
-      new SaleItem(
-        this.sale.items.length + 1,
-        value,
-        this.getRandomIntInclusive(10, 100),
-        1234567890 + this.sale.items.length + 1,
-        `./assets/new_product${this.getRandomIntInclusive(1, 3)}.jpg`
-      ),
-      1,
-      0
+
+    if (!value) return;
+
+    const newSaleItem = new Item(
+      this.sale.items.length + 1,
+      value,
+      this.getRandomIntInclusive(10, 100),
+      1234567890 + this.sale.items.length + 1,
+      `./assets/new_product${this.getRandomIntInclusive(1, 3)}.jpg`
     );
+    const newItem = new SaleDetail(newSaleItem, 1, 0);
+
     this.sale.items.push(newItem);
-    this.productCode = "";
+
+    this.itemCode = "";
 
     this.updateTotalAmounts();
-    this.communicationService.sendImageUrl(newItem.itemDetail.imageUrl);
+    this.communicationService.sendSaleItem(newSaleItem);
   }
 
   onItemSelect(id): void {
-    const imageUrl = this.sale.items.find(it => it.itemDetail.id == id)
-      .itemDetail.imageUrl;
-    this.communicationService.sendImageUrl(imageUrl);
+    const item = this.sale.items.find(it => it.itemDetail.id == id).itemDetail;
+    this.communicationService.sendSaleItem(item);
   }
 
   onAddItem(id): void {
@@ -68,6 +69,7 @@ export class SaleItemsComponent implements OnInit {
     } else {
       const index = items.indexOf(item);
       items.splice(index, 1);
+      this.communicationService.clearSaleItem();
     }
 
     this.updateTotalAmounts();

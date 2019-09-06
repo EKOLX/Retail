@@ -8,20 +8,23 @@ import { Subscription } from "rxjs";
   styleUrls: ["./sale-buttons.component.sass"]
 })
 export class SaleButtonsComponent implements OnInit, OnDestroy {
-  ticketNumber: number;
+  billNumber: number;
   itemImageUrl: string;
+  itemName: string;
   subscription: Subscription;
 
   constructor(private communicationService: CommunicationService) {
-    this.subscription = this.communicationService.getSale().subscribe(msg => {
-      if (msg) this.ticketNumber = msg.id;
+    this.subscription = this.communicationService.getSale().subscribe(sale => {
+      if (sale) this.billNumber = sale.id;
     });
-    this.communicationService.getImageUrl().subscribe(msg => {
-      if (msg) {
-        this.itemImageUrl = msg;
+    this.communicationService.getSaleItem().subscribe(saleItem => {
+      if (saleItem) {
+        this.itemImageUrl = saleItem.imageUrl;
+        this.itemName = saleItem.name;
       } else {
         // Clear image source if empty image is sent
         this.itemImageUrl = null;
+        this.itemName = null;
       }
     });
   }

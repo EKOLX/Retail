@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Sale, SaleDetail, SaleItem } from "../models/sale.model";
+import { Sale, SaleDetail, Item } from "../models/sale.model";
 
 @Injectable({
   providedIn: "root"
@@ -13,7 +13,7 @@ export class SaleService {
     sale.items = items;
 
     const item1 = new SaleDetail(
-      new SaleItem(
+      new Item(
         1,
         "New Balance sneakers",
         100,
@@ -25,7 +25,7 @@ export class SaleService {
     );
     items.push(item1);
     let item2 = new SaleDetail(
-      new SaleItem(
+      new Item(
         2,
         "Canon EOS 650D",
         305,
@@ -37,7 +37,7 @@ export class SaleService {
     );
     items.push(item2);
     let item3 = new SaleDetail(
-      new SaleItem(
+      new Item(
         3,
         "Parrot Anafi Drone",
         549,
@@ -49,7 +49,7 @@ export class SaleService {
     );
     items.push(item3);
     let item4 = new SaleDetail(
-      new SaleItem(
+      new Item(
         4,
         "Sony Home Theatre System",
         399.95,
@@ -61,7 +61,7 @@ export class SaleService {
     );
     items.push(item4);
     let item5 = new SaleDetail(
-      new SaleItem(
+      new Item(
         5,
         "MacBook Pro 15-inch 8-core 5.0GHz 32GB 3.2GB/s SSD Storage Touch Bar Touch ID",
         2153,
@@ -73,7 +73,7 @@ export class SaleService {
     );
     items.push(item5);
     let item6 = new SaleDetail(
-      new SaleItem(6, "iPhone Xs", 729, 6234567890, "./assets/iPhone_Xs.jpg"),
+      new Item(6, "iPhone Xs", 729, 6234567890, "./assets/iPhone_Xs.jpg"),
       1,
       0
     );
