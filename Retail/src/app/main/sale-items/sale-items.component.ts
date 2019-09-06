@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Sale, SaleDetail, SaleItem } from "src/app/models/sale.model";
+import { SaleService } from "src/app/services/sale.service";
+import { CommunicationService } from "src/app/services/communication.service";
 
 @Component({
   selector: "app-sale-items",
@@ -7,39 +9,51 @@ import { Sale, SaleDetail, SaleItem } from "src/app/models/sale.model";
   styleUrls: ["./sale-items.component.sass"]
 })
 export class SaleItemsComponent implements OnInit {
-  sales: Sale;
+  sale: Sale;
   itemDisplayName: string;
   productCode: string;
   subTotal: number;
   totalDiscount: number;
   total: number;
 
-  constructor() {
-    this.loadSales();
-  }
+  constructor(
+    private saleService: SaleService,
+    private communicationService: CommunicationService
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadSales();
+    this.communicationService.sendSale(this.sale);
+  }
 
   onProductEnter(event: KeyboardEvent) {
     const value = (<HTMLInputElement>event.target).value;
     const newItem = new SaleDetail(
       new SaleItem(
-        this.sales.items.length + 1,
+        this.sale.items.length + 1,
         value,
-        Math.floor(Math.random() * 100) + 10,
-        1234567890 + this.sales.items.length + 1
+        this.getRandomIntInclusive(10, 100),
+        1234567890 + this.sale.items.length + 1,
+        `./assets/new_product${this.getRandomIntInclusive(1, 3)}.jpg`
       ),
       1,
       0
     );
-    this.sales.items.push(newItem);
+    this.sale.items.push(newItem);
     this.productCode = "";
 
     this.updateTotalAmounts();
+    this.communicationService.sendImageUrl(newItem.itemDetail.imageUrl);
+  }
+
+  onItemSelect(id): void {
+    const imageUrl = this.sale.items.find(it => it.itemDetail.id == id)
+      .itemDetail.imageUrl;
+    this.communicationService.sendImageUrl(imageUrl);
   }
 
   onAddItem(id): void {
-    const { items } = this.sales;
+    const { items } = this.sale;
     let item = items.find(it => it.itemDetail.id == id);
     item.quantity += 1;
 
@@ -47,7 +61,7 @@ export class SaleItemsComponent implements OnInit {
   }
 
   onRemoveItem(id: number): void {
-    const { items } = this.sales;
+    const { items } = this.sale;
     let item = items.find(it => it.itemDetail.id == id);
     if (item.quantity > 1) {
       item.quantity -= 1;
@@ -61,68 +75,29 @@ export class SaleItemsComponent implements OnInit {
 
   private updateTotalAmounts(): void {
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
+    const roundTo2 = value => Math.round(value * 100) / 100;
 
-    const totalAmount = this.sales.items
+    const totalAmount = this.sale.items
       .map(it => it.totalAmount)
       .reduce(reducer, 0);
-    this.subTotal = Math.round(totalAmount * 100) / 100;
+    this.subTotal = roundTo2(totalAmount);
 
-    const discountAmount = this.sales.items
+    const discountAmount = this.sale.items
       .map(it => it.discountAmount)
       .reduce(reducer, 0);
-    this.totalDiscount = Math.round(discountAmount * 100) / 100;
+    this.totalDiscount = roundTo2(discountAmount);
 
-    this.total = Math.round((this.subTotal - this.totalDiscount) * 100) / 100;
+    this.total = roundTo2(this.subTotal - this.totalDiscount);
   }
 
   private loadSales(): void {
-    // TODO: Mock data. Will be moved to some service.
-    this.sales = new Sale(1, new Date());
-    const items: SaleDetail[] = [];
-    this.sales.items = items;
-
-    const item1 = new SaleDetail(
-      new SaleItem(1, "New Balance sneakers", 100, 1234567890),
-      1,
-      10
-    );
-    items.push(item1);
-    let item2 = new SaleDetail(
-      new SaleItem(2, "Canon EOS 650D", 305, 2234567890),
-      1,
-      5
-    );
-    items.push(item2);
-    let item3 = new SaleDetail(
-      new SaleItem(3, "Parrot Anafi Drone", 549, 3234567890),
-      1,
-      15
-    );
-    items.push(item3);
-    let item4 = new SaleDetail(
-      new SaleItem(4, "Sony Home Theatre System", 399.95, 4234567890),
-      1,
-      20
-    );
-    items.push(item4);
-    let item5 = new SaleDetail(
-      new SaleItem(
-        5,
-        "MacBook Pro 15-inch 8-core 5.0GHz 32GB 3.2GB/s SSD Storage Touch Bar Touch ID",
-        2153,
-        5234567890
-      ),
-      1,
-      25
-    );
-    items.push(item5);
-    let item6 = new SaleDetail(
-      new SaleItem(6, "iPhone Xs", 729, 6234567890),
-      1,
-      0
-    );
-    items.push(item6);
-
+    this.sale = this.saleService.getSale();
     this.updateTotalAmounts();
+  }
+
+  private getRandomIntInclusive(min: number, max: number): number {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 }

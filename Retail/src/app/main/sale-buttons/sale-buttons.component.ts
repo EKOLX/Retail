@@ -1,18 +1,34 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { CommunicationService } from "src/app/services/communication.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-sale-buttons",
   templateUrl: "./sale-buttons.component.html",
   styleUrls: ["./sale-buttons.component.sass"]
 })
-export class SaleButtonsComponent implements OnInit {
-  ticketNumber: string;
+export class SaleButtonsComponent implements OnInit, OnDestroy {
+  ticketNumber: number;
   itemImageUrl: string;
+  subscription: Subscription;
 
-  constructor() {
-    this.ticketNumber = "0000000001";
-    this.itemImageUrl = "https://picsum.photos/200";
+  constructor(private communicationService: CommunicationService) {
+    this.subscription = this.communicationService.getSale().subscribe(msg => {
+      if (msg) this.ticketNumber = msg.id;
+    });
+    this.communicationService.getImageUrl().subscribe(msg => {
+      if (msg) {
+        this.itemImageUrl = msg;
+      } else {
+        // Clear image source if empty image is sent
+        this.itemImageUrl = null;
+      }
+    });
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }

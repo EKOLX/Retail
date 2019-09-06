@@ -8,7 +8,8 @@ export class SaleItem {
     public id: number,
     public name: string,
     public price: number,
-    public barcode: number
+    public barcode: number,
+    public imageUrl: string = ""
   ) {}
 }
 
@@ -36,9 +37,4 @@ export class SaleDetail {
       this.discount > 0 ? -this.discount + "%" : ""
     } - barcode: ${this.itemDetail.barcode}`;
   }
-}
-
-export class ItemImage {
-  itemId: number;
-  imageUrl: string;
 }

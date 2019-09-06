@@ -21,8 +21,8 @@
     <input type="text" class="form-control m-1 bg-secondary text-white" placeholder="SCAN OR ENTER PRODUCT"
       (keyup.enter)="onProductEnter($event)" [(ngModel)]="productCode" />
   </div>
-  <div class="row" *ngFor="let item of sales.items">
-    <div class="col-md-9">
+  <div class="row" *ngFor="let item of sale.items">
+    <div class="col-md-9" style="cursor: pointer" (click)="onItemSelect(item.itemDetail.id)">
       <p class="form-control bg-success text-white">{{ item.displayName }}</p>
     </div>
     <div class="col-md-1">
