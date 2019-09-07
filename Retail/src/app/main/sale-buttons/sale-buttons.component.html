@@ -19,12 +19,24 @@
 </div>
 <div class="row">
   <div class="col-md-6 p-1">
-    <button type="button" class="btn btn-secondary w-100">
+    <button
+      type="button"
+      class="btn btn-secondary w-100"
+      data-toggle="modal"
+      data-target="#cptCompleted"
+      (click)="showCompleted()"
+    >
       <i class="fa fa-list mr-2"></i>Completed
     </button>
   </div>
   <div class="col-md-6 p-1">
-    <button type="button" class="btn btn-warning w-100">
+    <button
+      type="button"
+      class="btn btn-warning w-100"
+      data-toggle="modal"
+      data-target="#cptcptCompleted"
+      (click)="showIncompleted()"
+    >
       <i class="fa fa-hourglass-start mr-2"></i>Incompleted
     </button>
   </div>
@@ -50,3 +62,4 @@
     </button>
   </div>
 </div>
+<app-completed></app-completed>

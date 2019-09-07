@@ -13,7 +13,7 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
   billNumber: number;
   itemImageUrl: string;
   itemName: string;
-  subscription: Subscription;
+  private subscription: Subscription;
 
   constructor(private communicationService: CommunicationService) {
     this.subscription = this.communicationService.getSale().subscribe(msg => {
@@ -32,6 +32,14 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {}
+
+  showCompleted(): void {
+    this.communicationService.sendShowModal(true);
+  }
+
+  showIncompleted(): void {
+    this.communicationService.sendShowModal(true);
+  }
 
   onComplete(): void {
     this.communicationService.sendSaleStatus(new Message(Status.isCompleted));

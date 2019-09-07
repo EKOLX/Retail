@@ -1,39 +1,43 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Sale, SaleDetail, Item } from "src/app/models/sale.model";
 import { SaleService } from "src/app/services/sale.service";
 import { CommunicationService } from "src/app/services/communication.service";
 import { Message } from "src/app/models/message.model";
 import { Status } from "src/app/models/status.model";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-sale-items",
   templateUrl: "./sale-items.component.html",
   styleUrls: ["./sale-items.component.sass"]
 })
-export class SaleItemsComponent implements OnInit {
+export class SaleItemsComponent implements OnInit, OnDestroy {
   sale: Sale;
   itemDisplayName: string;
   itemCode: string;
   subTotal: number;
   totalDiscount: number;
   total: number;
+  private subscription: Subscription;
 
   constructor(
     private saleService: SaleService,
     private communicationService: CommunicationService
   ) {
-    this.communicationService.getSaleStatus().subscribe(msg => {
-      if (msg) {
-        switch (msg.status) {
-          case Status.isCompleted:
-            this.completeSale();
-            break;
-          case Status.isRemoved:
-            this.clearSale();
-            break;
+    this.subscription = this.communicationService
+      .getSaleStatus()
+      .subscribe(msg => {
+        if (msg) {
+          switch (msg.status) {
+            case Status.isCompleted:
+              this.completeSale();
+              break;
+            case Status.isRemoved:
+              this.clearSale();
+              break;
+          }
         }
-      }
-    });
+      });
   }
 
   ngOnInit() {
@@ -117,6 +121,7 @@ export class SaleItemsComponent implements OnInit {
     if (this.sale.items.length > 0) {
       this.sale = this.saleService.completeSale(this.sale);
       this.communicationService.clearItem();
+      this.communicationService.sendSale(new Message(null, this.sale.id));
       this.updateTotalAmounts();
     } else {
       // TODO: show error message or something else
@@ -150,5 +155,9 @@ export class SaleItemsComponent implements OnInit {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

@@ -9,13 +9,15 @@ import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./header/header.component";
 import { SaleItemsComponent } from "./main/sale-items/sale-items.component";
 import { SaleButtonsComponent } from "./main/sale-buttons/sale-buttons.component";
+import { CompletedComponent } from './main/completed/completed.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     SaleItemsComponent,
-    SaleButtonsComponent
+    SaleButtonsComponent,
+    CompletedComponent
   ],
   imports: [
     BrowserModule,
