@@ -19,20 +19,34 @@
 </div>
 <div class="row">
   <div class="col-md-6 p-1">
-    <button type="button" class="btn btn-success w-100">Empty button</button>
+    <button type="button" class="btn btn-secondary w-100">
+      <i class="fa fa-list mr-2"></i>Completed
+    </button>
   </div>
   <div class="col-md-6 p-1">
-    <button type="button" class="btn btn-success w-100">Empty button</button>
+    <button type="button" class="btn btn-warning w-100">
+      <i class="fa fa-hourglass-start mr-2"></i>Incompleted
+    </button>
   </div>
   <div class="col-md-6 p-1">
-    <button type="button" class="btn btn-success w-100">Complete list</button>
+    <button type="button" class="btn btn-info w-100">
+      <i class="fa fa-share-square mr-2"></i>Save & Continue
+    </button>
   </div>
   <div class="col-md-6 p-1">
-    <button type="button" class="btn btn-success w-100">Incomplete list</button>
+    <button
+      type="button"
+      class="btn btn-danger w-100 h-100"
+      (click)="onClear()"
+    >
+      <i class="fa fa-trash mr-2"></i>Clear
+    </button>
   </div>
 </div>
 <div class="row">
   <div class="col-md-12 p-1">
-    <button type="button" class="btn btn-success w-100">Complete</button>
+    <button type="button" class="btn btn-success w-100" (click)="onComplete()">
+      <i class="fa fa-cart-arrow-down mr-2"></i>Complete
+    </button>
   </div>
 </div>

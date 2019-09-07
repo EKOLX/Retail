@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { CommunicationService } from "src/app/services/communication.service";
 import { Subscription } from "rxjs";
+import { CommunicationService } from "src/app/services/communication.service";
+import { Message } from "src/app/models/message.model";
+import { Status } from "src/app/models/status.model";
 
 @Component({
   selector: "app-sale-buttons",
@@ -14,13 +16,13 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   constructor(private communicationService: CommunicationService) {
-    this.subscription = this.communicationService.getSale().subscribe(sale => {
-      if (sale) this.billNumber = sale.id;
+    this.subscription = this.communicationService.getSale().subscribe(msg => {
+      if (msg) this.billNumber = msg.billNumber;
     });
-    this.communicationService.getSaleItem().subscribe(saleItem => {
-      if (saleItem) {
-        this.itemImageUrl = saleItem.imageUrl;
-        this.itemName = saleItem.name;
+    this.communicationService.getItem().subscribe(msg => {
+      if (msg) {
+        this.itemImageUrl = msg.itemImageUrl;
+        this.itemName = msg.itemName;
       } else {
         // Clear image source if empty image is sent
         this.itemImageUrl = null;
@@ -30,6 +32,14 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {}
+
+  onComplete(): void {
+    this.communicationService.sendSaleStatus(new Message(Status.isCompleted));
+  }
+
+  onClear(): void {
+    this.communicationService.sendSaleStatus(new Message(Status.isRemoved));
+  }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();

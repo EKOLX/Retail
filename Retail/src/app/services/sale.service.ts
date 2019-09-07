@@ -6,10 +6,11 @@ import { Sale, SaleDetail, Item } from "../models/sale.model";
 })
 export class SaleService {
   // Mock data. Will be moved to Node.js
-  getSale(): Sale {
-    const sale: Sale = new Sale(1234567890, new Date());
-    const items: SaleDetail[] = [];
+  private sales: Sale[] = [];
 
+  getMockSale(): Sale {
+    const sale: Sale = new Sale(1, new Date());
+    const items: SaleDetail[] = [];
     sale.items = items;
 
     const item1 = new SaleDetail(
@@ -18,7 +19,7 @@ export class SaleService {
         "New Balance sneakers",
         100,
         1234567890,
-        "./assets/new_balance_sneakers.jpg"
+        "./assets/new_balance_sneakers_42.jpg"
       ),
       1,
       10
@@ -80,5 +81,19 @@ export class SaleService {
     items.push(item6);
 
     return sale;
+  }
+
+  getSale(id: number): Sale {
+    return this.sales.find(s => s.id == id);
+  }
+
+  completeSale(sale: Sale): Sale {
+    this.sales.push(sale);
+
+    const newSale: Sale = new Sale(this.sales.length + 1, new Date());
+    const items: SaleDetail[] = [];
+    newSale.items = items;
+
+    return newSale;
   }
 }

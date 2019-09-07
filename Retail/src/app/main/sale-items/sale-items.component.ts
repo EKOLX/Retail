@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { Sale, SaleDetail, Item } from "src/app/models/sale.model";
 import { SaleService } from "src/app/services/sale.service";
 import { CommunicationService } from "src/app/services/communication.service";
+import { Message } from "src/app/models/message.model";
+import { Status } from "src/app/models/status.model";
 
 @Component({
   selector: "app-sale-items",
@@ -19,11 +21,26 @@ export class SaleItemsComponent implements OnInit {
   constructor(
     private saleService: SaleService,
     private communicationService: CommunicationService
-  ) {}
+  ) {
+    this.communicationService.getSaleStatus().subscribe(msg => {
+      if (msg) {
+        switch (msg.status) {
+          case Status.isCompleted:
+            this.completeSale();
+            break;
+          case Status.isRemoved:
+            this.clearSale();
+            break;
+        }
+      }
+    });
+  }
 
   ngOnInit() {
     this.loadSales();
-    this.communicationService.sendSale(this.sale);
+
+    let message = new Message(null, this.sale.id);
+    this.communicationService.sendSale(message);
   }
 
   onItemEnter(event: KeyboardEvent) {
@@ -36,27 +53,42 @@ export class SaleItemsComponent implements OnInit {
       value,
       this.getRandomIntInclusive(10, 100),
       1234567890 + this.sale.items.length + 1,
-      `./assets/new_product${this.getRandomIntInclusive(1, 3)}.jpg`
+      `./assets/new_product${this.getRandomIntInclusive(1, 2)}.jpg`
     );
     const newItem = new SaleDetail(newSaleItem, 1, 0);
-
     this.sale.items.push(newItem);
 
     this.itemCode = "";
-
     this.updateTotalAmounts();
-    this.communicationService.sendSaleItem(newSaleItem);
+
+    let message = new Message(
+      null,
+      null,
+      newSaleItem.name,
+      newSaleItem.imageUrl
+    );
+    this.communicationService.sendItem(message);
   }
 
   onItemSelect(id): void {
     const item = this.sale.items.find(it => it.itemDetail.id == id).itemDetail;
-    this.communicationService.sendSaleItem(item);
+
+    let message = new Message(null, null, item.name, item.imageUrl);
+    this.communicationService.sendItem(message);
   }
 
   onAddItem(id): void {
     const { items } = this.sale;
     let item = items.find(it => it.itemDetail.id == id);
     item.quantity += 1;
+
+    let message = new Message(
+      null,
+      null,
+      item.itemDetail.name,
+      item.itemDetail.imageUrl
+    );
+    this.communicationService.sendItem(message);
 
     this.updateTotalAmounts();
   }
@@ -69,9 +101,31 @@ export class SaleItemsComponent implements OnInit {
     } else {
       const index = items.indexOf(item);
       items.splice(index, 1);
-      this.communicationService.clearSaleItem();
+      this.communicationService.clearItem();
     }
 
+    this.updateTotalAmounts();
+  }
+
+  private loadSales(): void {
+    // Getting mock data of 1st sale
+    this.sale = this.saleService.getMockSale();
+    this.updateTotalAmounts();
+  }
+
+  private completeSale(): void {
+    if (this.sale.items.length > 0) {
+      this.sale = this.saleService.completeSale(this.sale);
+      this.communicationService.clearItem();
+      this.updateTotalAmounts();
+    } else {
+      // TODO: show error message or something else
+    }
+  }
+
+  private clearSale(): void {
+    this.sale.items = [];
+    this.communicationService.clearItem();
     this.updateTotalAmounts();
   }
 
@@ -90,11 +144,6 @@ export class SaleItemsComponent implements OnInit {
     this.totalDiscount = roundTo2(discountAmount);
 
     this.total = roundTo2(this.subTotal - this.totalDiscount);
-  }
-
-  private loadSales(): void {
-    this.sale = this.saleService.getSale();
-    this.updateTotalAmounts();
   }
 
   private getRandomIntInclusive(min: number, max: number): number {
