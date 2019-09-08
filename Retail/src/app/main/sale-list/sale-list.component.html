@@ -1,0 +1,44 @@
+<div id="cptItemList" class="modal fade">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{ title }}</h4>
+        <button type="button" class="close" (click)="hideModal()">
+          &times;
+        </button>
+      </div>
+      <div *ngIf="sales.length > 0" class="modal-body">
+        <table class="table table-striped">
+          <thead>
+            <tr class="table-info">
+              <th scope="col">№</th>
+              <th scope="col">Date</th>
+              <th scope="col">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let sale of sales">
+              <td>{{ sale.id }}</td>
+              <td>{{ sale.date }}</td>
+              <td>{{ sale.totalAmount }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="sales.length == 0">
+        <p class="text-center font-italic">List is empty.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-info" (click)="hideModal()">Close</button>
+
+        <!-- this button is hidden, used to close from typescript -->
+        <button
+          id="btnClose"
+          type="button"
+          data-dismiss="modal"
+          style="display: none;"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>

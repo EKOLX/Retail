@@ -9,7 +9,7 @@ export class CommunicationService {
   private saleSubject = new Subject<Message>();
   private itemSubject = new Subject<Message>();
   private statusSubject = new Subject<Message>();
-  private modalSubject = new Subject<boolean>();
+  private modalSubject = new Subject<Message>();
 
   sendSale(message: Message): void {
     this.saleSubject.next(message);
@@ -39,11 +39,11 @@ export class CommunicationService {
     this.itemSubject.next();
   }
 
-  sendShowModal(value: boolean): void {
+  sendShowModal(value: Message): void {
     this.modalSubject.next(value);
   }
 
-  getShowModal(): Observable<boolean> {
+  getShowModal(): Observable<Message> {
     return this.modalSubject.asObservable();
   }
 }

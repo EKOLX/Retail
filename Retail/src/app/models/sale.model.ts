@@ -1,6 +1,16 @@
 export class Sale {
   constructor(public id: number, public date: Date) {}
   items: Array<SaleDetail>;
+
+  get totalAmount(): number {
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+    const roundTo2 = value => Math.round(value * 100) / 100;
+    const discountAmount = this.items
+      .map(it => it.discountAmount)
+      .reduce(reducer, 0);
+    const totalAmount = this.items.map(it => it.totalAmount).reduce(reducer, 0);
+    return roundTo2(totalAmount - discountAmount);
+  }
 }
 
 export class Item {

@@ -7,6 +7,7 @@ import { Sale, SaleDetail, Item } from "../models/sale.model";
 export class SaleService {
   // Mock data. Will be moved to Node.js
   private sales: Sale[] = [];
+  private savedSales: Sale[] = [];
 
   getMockSale(): Sale {
     const sale: Sale = new Sale(1, new Date());
@@ -85,6 +86,11 @@ export class SaleService {
 
   getSale(id: number): Sale {
     return this.sales.find(s => s.id == id);
+  }
+
+  getSales(saved: boolean = false): Array<Sale> {
+    if (saved) return this.savedSales;
+    else return this.sales;
   }
 
   completeSale(sale: Sale): Sale {

@@ -3,6 +3,7 @@ import { Subscription } from "rxjs";
 import { CommunicationService } from "src/app/services/communication.service";
 import { Message } from "src/app/models/message.model";
 import { Status } from "src/app/models/status.model";
+import { SaleService } from "src/app/services/sale.service";
 
 @Component({
   selector: "app-sale-buttons",
@@ -15,7 +16,10 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
   itemName: string;
   private subscription: Subscription;
 
-  constructor(private communicationService: CommunicationService) {
+  constructor(
+    private communicationService: CommunicationService,
+    private saleService: SaleService
+  ) {
     this.subscription = this.communicationService.getSale().subscribe(msg => {
       if (msg) this.billNumber = msg.billNumber;
     });
@@ -34,11 +38,19 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   showCompleted(): void {
-    this.communicationService.sendShowModal(true);
+    const message = new Message();
+    message.showModal = true;
+    message.title = "Completed list";
+    message.saleList = this.saleService.getSales();
+    this.communicationService.sendShowModal(message);
   }
 
   showIncompleted(): void {
-    this.communicationService.sendShowModal(true);
+    const message = new Message();
+    message.showModal = true;
+    message.title = "Incompleted list";
+    message.saleList = this.saleService.getSales(true);
+    this.communicationService.sendShowModal(message);
   }
 
   onComplete(): void {
