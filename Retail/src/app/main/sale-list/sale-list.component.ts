@@ -31,7 +31,7 @@ export class SaleListComponent implements OnInit, OnDestroy {
   }
 
   showModal(): void {
-    $("#cptItemList").modal("show");
+    $("#cmptSaleList").modal("show");
   }
 
   hideModal(): void {
