@@ -38,7 +38,7 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   showCompleted(): void {
-    const message = new Message();
+    const message = new Message(Status.isCompleted);
     message.showModal = true;
     message.title = "Completed list";
     message.saleList = this.saleService.getSales();
@@ -46,7 +46,7 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
   }
 
   showIncompleted(): void {
-    const message = new Message();
+    const message = new Message(Status.isSaved);
     message.showModal = true;
     message.title = "Incompleted list";
     message.saleList = this.saleService.getSales(true);

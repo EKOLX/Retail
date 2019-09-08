@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { CommunicationService } from "src/app/services/communication.service";
 import { Subscription } from "rxjs";
 import { Sale } from "src/app/models/sale.model";
+import { Status } from "src/app/models/status.model";
 
 // This lets me use jQuery
 declare var $: any;
@@ -13,6 +14,7 @@ declare var $: any;
 })
 export class SaleListComponent implements OnInit, OnDestroy {
   title: string;
+  isIncompleted: boolean;
   sales: Array<Sale> = [];
   private subscription: Subscription;
 
@@ -24,10 +26,15 @@ export class SaleListComponent implements OnInit, OnDestroy {
       .subscribe(msg => {
         if (msg) {
           this.title = msg.title;
+          this.isIncompleted = msg.status == Status.isSaved;
           this.sales = msg.saleList;
           if (msg.showModal) this.showModal();
         }
       });
+  }
+
+  onRestore(): void {
+    this.hideModal();
   }
 
   showModal(): void {

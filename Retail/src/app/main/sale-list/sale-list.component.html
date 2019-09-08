@@ -29,7 +29,14 @@
         <p class="text-center font-italic">List is empty.</p>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-info" (click)="hideModal()">Close</button>
+        <button
+          *ngIf="isIncompleted"
+          class="btn btn-info"
+          (click)="onRestore()"
+        >
+          Restore
+        </button>
+        <button class="btn btn-secondary" (click)="hideModal()">Close</button>
 
         <!-- this button is hidden, used to close from typescript -->
         <button
