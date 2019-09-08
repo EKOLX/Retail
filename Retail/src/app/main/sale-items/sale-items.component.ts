@@ -32,6 +32,9 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
             case Status.isCompleted:
               this.completeSale();
               break;
+            case Status.isSaved:
+              this.saveSale();
+              break;
             case Status.isRemoved:
               this.clearSale();
               break;
@@ -115,6 +118,17 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
     // Getting mock data of 1st sale
     this.sale = this.saleService.getMockSale();
     this.updateTotalAmounts();
+  }
+
+  private saveSale(): void {
+    if (this.sale.items.length > 0) {
+      this.sale = this.saleService.saveSale(this.sale);
+      this.communicationService.clearItem();
+      this.communicationService.sendSale(new Message(null, this.sale.id));
+      this.updateTotalAmounts();
+    } else {
+      // TODO: show error message or something else
+    }
   }
 
   private completeSale(): void {

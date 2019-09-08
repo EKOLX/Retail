@@ -93,13 +93,23 @@ export class SaleService {
     else return this.sales;
   }
 
+  saveSale(sale: Sale): Sale {
+    this.savedSales.push(sale);
+    return this.createNewSale();
+  }
+
   completeSale(sale: Sale): Sale {
     this.sales.push(sale);
+    return this.createNewSale();
+  }
 
-    const newSale: Sale = new Sale(this.sales.length + 1, new Date());
+  private createNewSale(): Sale {
+    const newSale: Sale = new Sale(
+      this.sales.length + this.savedSales.length + 1,
+      new Date()
+    );
     const items: SaleDetail[] = [];
     newSale.items = items;
-
     return newSale;
   }
 }

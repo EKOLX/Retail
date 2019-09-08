@@ -53,12 +53,16 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
     this.communicationService.sendShowModal(message);
   }
 
-  onComplete(): void {
-    this.communicationService.sendSaleStatus(new Message(Status.isCompleted));
+  onSave(): void {
+    this.communicationService.sendSaleStatus(new Message(Status.isSaved));
   }
 
   onClear(): void {
     this.communicationService.sendSaleStatus(new Message(Status.isRemoved));
+  }
+
+  onComplete(): void {
+    this.communicationService.sendSaleStatus(new Message(Status.isCompleted));
   }
 
   ngOnDestroy() {

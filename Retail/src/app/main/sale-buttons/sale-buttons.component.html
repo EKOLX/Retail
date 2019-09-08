@@ -41,16 +41,12 @@
     </button>
   </div>
   <div class="col-md-6 p-1">
-    <button type="button" class="btn btn-info w-100">
-      <i class="fa fa-share-square mr-2"></i>Save & Continue
+    <button type="button" class="btn btn-info w-100" (click)="onSave()">
+      <i class="fa fa-share-square mr-2"></i>Save
     </button>
   </div>
   <div class="col-md-6 p-1">
-    <button
-      type="button"
-      class="btn btn-danger w-100 h-100"
-      (click)="onClear()"
-    >
+    <button type="button" class="btn btn-danger w-100" (click)="onClear()">
       <i class="fa fa-trash mr-2"></i>Clear
     </button>
   </div>
