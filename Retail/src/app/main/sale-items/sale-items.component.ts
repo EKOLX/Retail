@@ -41,13 +41,28 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
           }
         }
       });
+    this.communicationService.getSale().subscribe(msg => {
+      if (msg) {
+        // TODO: Check current sale. If it's empty add selected sale otherwise show dialog about confirmation.
+        if (this.sale.items.length > 0) {
+          alert("Current sale is not empty.");
+          return;
+        } else {
+          this.saveSale();
+          this.sale = this.saleService.removeSavedSaleById(msg.billNumber);
+          this.updateTotalAmounts();
+          this.communicationService.sendSaleInfo(
+            new Message(null, this.sale.id)
+          );
+        }
+      }
+    });
   }
 
   ngOnInit() {
     this.loadSales();
 
-    let message = new Message(null, this.sale.id);
-    this.communicationService.sendSale(message);
+    this.communicationService.sendSaleInfo(new Message(null, this.sale.id));
   }
 
   onItemEnter(event: KeyboardEvent) {
@@ -124,7 +139,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
     if (this.sale.items.length > 0) {
       this.sale = this.saleService.saveSale(this.sale);
       this.communicationService.clearItem();
-      this.communicationService.sendSale(new Message(null, this.sale.id));
+      this.communicationService.sendSaleInfo(new Message(null, this.sale.id));
       this.updateTotalAmounts();
     } else {
       // TODO: show error message or something else
@@ -135,7 +150,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
     if (this.sale.items.length > 0) {
       this.sale = this.saleService.completeSale(this.sale);
       this.communicationService.clearItem();
-      this.communicationService.sendSale(new Message(null, this.sale.id));
+      this.communicationService.sendSaleInfo(new Message(null, this.sale.id));
       this.updateTotalAmounts();
     } else {
       // TODO: show error message or something else

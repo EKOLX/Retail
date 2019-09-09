@@ -20,9 +20,11 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
     private communicationService: CommunicationService,
     private saleService: SaleService
   ) {
-    this.subscription = this.communicationService.getSale().subscribe(msg => {
-      if (msg) this.billNumber = msg.billNumber;
-    });
+    this.subscription = this.communicationService
+      .getSaleInfo()
+      .subscribe(msg => {
+        if (msg) this.billNumber = msg.billNumber;
+      });
     this.communicationService.getItem().subscribe(msg => {
       if (msg) {
         this.itemImageUrl = msg.itemImageUrl;

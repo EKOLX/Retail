@@ -7,6 +7,7 @@ import { Message } from "../models/message.model";
 })
 export class CommunicationService {
   private saleSubject = new Subject<Message>();
+  private saleInfoSubject = new Subject<Message>();
   private itemSubject = new Subject<Message>();
   private statusSubject = new Subject<Message>();
   private modalSubject = new Subject<Message>();
@@ -17,6 +18,14 @@ export class CommunicationService {
 
   getSale(): Observable<Message> {
     return this.saleSubject.asObservable();
+  }
+
+  sendSaleInfo(message: Message): void {
+    this.saleInfoSubject.next(message);
+  }
+
+  getSaleInfo(): Observable<Message> {
+    return this.saleInfoSubject.asObservable();
   }
 
   sendSaleStatus(message: Message): void {

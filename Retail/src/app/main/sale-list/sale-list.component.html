@@ -17,7 +17,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let sale of sales">
+            <tr *ngFor="let sale of sales" [ngClass]="getSaleClass(sale.id)" style="cursor: pointer;"
+              (click)="onSelectSale(sale.id)">
               <td>{{ sale.id }}</td>
               <td>{{ sale.date }}</td>
               <td>{{ sale.totalAmount }}</td>
@@ -29,22 +30,13 @@
         <p class="text-center font-italic">List is empty.</p>
       </div>
       <div class="modal-footer">
-        <button
-          *ngIf="isIncompleted"
-          class="btn btn-info"
-          (click)="onRestore()"
-        >
+        <button *ngIf="isIncompleted" class="btn btn-info" (click)="onRestore()" [disabled]="selectedSaleId==0">
           Restore
         </button>
         <button class="btn btn-secondary" (click)="hideModal()">Close</button>
 
         <!-- this button is hidden, used to close from typescript -->
-        <button
-          id="btnClose"
-          type="button"
-          data-dismiss="modal"
-          style="display: none;"
-        ></button>
+        <button id="btnClose" type="button" data-dismiss="modal" style="display: none;"></button>
       </div>
     </div>
   </div>

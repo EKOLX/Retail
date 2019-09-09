@@ -84,8 +84,11 @@ export class SaleService {
     return sale;
   }
 
-  getSale(id: number): Sale {
-    return this.sales.find(s => s.id == id);
+  removeSavedSaleById(id: number): Sale {
+    const sale = this.savedSales.find(s => s.id == id);
+    const index = this.savedSales.indexOf(sale);
+    this.savedSales.splice(index, 1);
+    return sale;
   }
 
   getSales(saved: boolean = false): Array<Sale> {

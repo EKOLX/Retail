@@ -3,6 +3,7 @@ import { CommunicationService } from "src/app/services/communication.service";
 import { Subscription } from "rxjs";
 import { Sale } from "src/app/models/sale.model";
 import { Status } from "src/app/models/status.model";
+import { Message } from "src/app/models/message.model";
 
 // This lets me use jQuery
 declare var $: any;
@@ -15,6 +16,7 @@ declare var $: any;
 export class SaleListComponent implements OnInit, OnDestroy {
   title: string;
   isIncompleted: boolean;
+  selectedSaleId: number = 0;
   sales: Array<Sale> = [];
   private subscription: Subscription;
 
@@ -34,7 +36,18 @@ export class SaleListComponent implements OnInit, OnDestroy {
   }
 
   onRestore(): void {
+    this.communicationService.sendSale(
+      new Message(Status.isSaved, this.selectedSaleId)
+    );
     this.hideModal();
+  }
+
+  getSaleClass(id: number): string {
+    return this.selectedSaleId == id ? "table-primary" : "";
+  }
+
+  onSelectSale(id: number): void {
+    this.selectedSaleId = id;
   }
 
   showModal(): void {
@@ -42,6 +55,7 @@ export class SaleListComponent implements OnInit, OnDestroy {
   }
 
   hideModal(): void {
+    this.selectedSaleId = 0;
     document.getElementById("btnClose").click();
   }
 
