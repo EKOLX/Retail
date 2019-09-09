@@ -14,9 +14,15 @@ export class HeaderComponent implements OnInit {
   constructor() {
     const user: User = new User("Elkhan", "Mursali");
     this.userFullName = user.fullName;
+    this.updateDateTime();
+  }
+
+  private updateDateTime(): void {
     const date: Date = new Date();
     this.currentDateTime = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    setInterval(() => this.updateDateTime(), 1000);
+  }
 }
