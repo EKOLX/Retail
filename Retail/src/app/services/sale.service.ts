@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Sale, SaleDetail, Item } from "../models/sale.model";
+import { ItemService } from "./item.service";
 
 @Injectable({
   providedIn: "root"
@@ -9,77 +10,44 @@ export class SaleService {
   private sales: Sale[] = [];
   private savedSales: Sale[] = [];
 
+  constructor(private itemService: ItemService) {}
+
   getMockSale(): Sale {
     const sale: Sale = new Sale(1, new Date());
-    const items: SaleDetail[] = [];
+    const saleDetails: SaleDetail[] = [];
+    sale.saleDetails = saleDetails;
+    const items: Item[] = [];
     sale.items = items;
 
-    const item1 = new SaleDetail(
-      new Item(
-        1,
-        "New Balance sneakers",
-        100,
-        1234567890,
-        "./assets/new_balance_sneakers_42.jpg"
-      ),
-      1,
-      10
-    );
+    const item1 = this.itemService.getItemById(1);
     items.push(item1);
-    let item2 = new SaleDetail(
-      new Item(
-        2,
-        "Canon EOS 650D",
-        305,
-        2234567890,
-        "./assets/canon_eos_650d.jpg"
-      ),
-      1,
-      5
-    );
+    const saleDetail1 = new SaleDetail(item1.id, item1.price, 1, 10);
+    saleDetails.push(saleDetail1);
+
+    let item2 = this.itemService.getItemById(2);
     items.push(item2);
-    let item3 = new SaleDetail(
-      new Item(
-        3,
-        "Parrot Anafi Drone",
-        549,
-        3234567890,
-        "./assets/parrot_anafi_drone.jpg"
-      ),
-      1,
-      15
-    );
+    const saleDetail2 = new SaleDetail(item2.id, item2.price, 1, 5);
+    saleDetails.push(saleDetail2);
+
+    let item3 = this.itemService.getItemById(3);
     items.push(item3);
-    let item4 = new SaleDetail(
-      new Item(
-        4,
-        "Sony Home Theatre System",
-        399.95,
-        4234567890,
-        "./assets/sony_home_theatre_system.jpg"
-      ),
-      1,
-      20
-    );
+    const saleDetail3 = new SaleDetail(item3.id, item3.price, 1, 15);
+    saleDetails.push(saleDetail3);
+
+    let item4 = this.itemService.getItemById(4);
     items.push(item4);
-    let item5 = new SaleDetail(
-      new Item(
-        5,
-        "MacBook Pro 15-inch 8-core 5.0GHz 32GB 3.2GB/s SSD Storage Touch Bar Touch ID",
-        2153,
-        5234567890,
-        "./assets/macBook_pro_15_inch.jpg"
-      ),
-      1,
-      25
-    );
+    const saleDetail4 = new SaleDetail(item4.id, item4.price, 1, 20);
+    saleDetails.push(saleDetail4);
+
+    let item5 = this.itemService.getItemById(5);
     items.push(item5);
-    let item6 = new SaleDetail(
-      new Item(6, "iPhone Xs", 729, 6234567890, "./assets/iPhone_Xs.jpg"),
-      1,
-      0
-    );
+    const saleDetail5 = new SaleDetail(item5.id, item5.price, 1, 25);
+    saleDetails.push(saleDetail5);
+
+    let item6 = this.itemService.getItemById(6);
     items.push(item6);
+    const saleDetail6 = new SaleDetail(item6.id, item6.price, 1, 0);
+    saleDetails.push(saleDetail6);
 
     return sale;
   }
@@ -111,8 +79,10 @@ export class SaleService {
       this.sales.length + this.savedSales.length + 1,
       new Date()
     );
-    const items: SaleDetail[] = [];
+    const items: Item[] = [];
     newSale.items = items;
+    const saleDetails: SaleDetail[] = [];
+    newSale.saleDetails = saleDetails;
     return newSale;
   }
 }

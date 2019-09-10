@@ -1,65 +1,18 @@
-<style>
-  ::placeholder {
-    color: white;
-    opacity: 1;
-    /* Firefox */
-  }
-
-  :-ms-input-placeholder {
-    /* Internet Explorer 10-11 */
-    color: white;
-  }
-
-  ::-ms-input-placeholder {
-    /* Microsoft Edge */
-    color: white;
-  }
-</style>
-
 <div style="overflow-y: scroll; overflow-x: hidden;">
   <div class="row mt-1 mb-2">
     <div class="col-md-9">
-      <input
-        type="text"
-        class="form-control bg-secondary text-white"
-        placeholder="SCAN OR ENTER PRODUCT"
-        (keyup.enter)="onItemEnter($event)"
-        [(ngModel)]="itemCode"
-      />
+      <input type="text" class="form-control bg-secondary text-white" placeholder="SCAN OR ENTER PRODUCT"
+        (keyup.enter)="onItemEnter($event)" [(ngModel)]="itemCode" />
     </div>
     <div class="col-md-3">
-      <button
-        class="btn btn-secondary w-100"
-        (click)="onItemEnter($event)"
-        [disabled]="!itemCode"
-      >
+      <button class="btn btn-secondary w-100" (click)="onItemEnter($event)" [disabled]="!itemCode">
         ENTER
       </button>
     </div>
   </div>
-  <div class="row" *ngFor="let item of sale.items">
-    <div
-      class="col-md-9"
-      style="cursor: pointer"
-      (click)="onItemSelect(item.itemDetail.id)"
-    >
-      <p class="form-control bg-light text-dark">{{ item.displayName }}</p>
-    </div>
-    <div class="col-md-1">
-      <span class="badge badge-info text-center p-2">{{ item.quantity }}</span>
-    </div>
-    <div class="col-md-2">
-      <button
-        class="btn btn-primary mr-1"
-        (click)="onAddItem(item.itemDetail.id)"
-      >
-        <i class="fa fa-plus-circle"></i>
-      </button>
-      <button class="btn btn-danger" (click)="onRemoveItem(item.itemDetail.id)">
-        <i class=" fa fa-minus-circle"></i>
-      </button>
-    </div>
-  </div>
+  <app-sale-item *ngFor="let saleDetail of sale.saleDetails" [saleDetail]="saleDetail"
+    (amountChanged)="onAmountChanged($event)">
+  </app-sale-item>
   <hr style="border: 1px solid green; border-radius: 2px;" />
   <div class="row">
     <div class="col-md-9">

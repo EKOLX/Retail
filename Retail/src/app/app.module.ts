@@ -10,6 +10,7 @@ import { HeaderComponent } from "./header/header.component";
 import { SaleItemsComponent } from "./main/sale-items/sale-items.component";
 import { SaleButtonsComponent } from "./main/sale-buttons/sale-buttons.component";
 import { SaleListComponent } from "./main/sale-list/sale-list.component";
+import { SaleItemComponent } from './main/sale-items/sale-item/sale-item.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { SaleListComponent } from "./main/sale-list/sale-list.component";
     HeaderComponent,
     SaleItemsComponent,
     SaleButtonsComponent,
-    SaleListComponent
+    SaleListComponent,
+    SaleItemComponent
   ],
   imports: [
     BrowserModule,

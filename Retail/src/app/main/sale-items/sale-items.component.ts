@@ -70,67 +70,29 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
 
     if (!value) return;
 
-    const newSaleItem = new Item(
+    const newItem = new Item(
       this.sale.items.length + 1,
       value,
       this.getRandomIntInclusive(10, 100),
       1234567890 + this.sale.items.length + 1,
       `./assets/new_product${this.getRandomIntInclusive(1, 2)}.jpg`
     );
-    const newItem = new SaleDetail(newSaleItem, 1, 0);
     this.sale.items.push(newItem);
+    const newSaleDetail = new SaleDetail(newItem.id, newItem.price, 1, 0);
+    this.sale.saleDetails.push(newSaleDetail);
 
     this.itemCode = "";
     this.updateTotalAmounts();
 
-    let message = new Message(
-      null,
-      null,
-      newSaleItem.name,
-      newSaleItem.imageUrl
-    );
+    let message = new Message(null, null, newItem.name, newItem.imageUrl);
     this.communicationService.sendItem(message);
   }
 
-  onItemSelect(id): void {
-    const item = this.sale.items.find(it => it.itemDetail.id == id).itemDetail;
-
-    let message = new Message(null, null, item.name, item.imageUrl);
-    this.communicationService.sendItem(message);
-  }
-
-  onAddItem(id): void {
-    const { items } = this.sale;
-    let item = items.find(it => it.itemDetail.id == id);
-    item.quantity += 1;
-
-    let message = new Message(
-      null,
-      null,
-      item.itemDetail.name,
-      item.itemDetail.imageUrl
-    );
-    this.communicationService.sendItem(message);
-
-    this.updateTotalAmounts();
-  }
-
-  onRemoveItem(id: number): void {
-    const { items } = this.sale;
-    let item = items.find(it => it.itemDetail.id == id);
-    if (item.quantity > 1) {
-      item.quantity -= 1;
-    } else {
-      const index = items.indexOf(item);
-      items.splice(index, 1);
-      this.communicationService.clearItem();
-    }
-
+  onAmountChanged(event: boolean) {
     this.updateTotalAmounts();
   }
 
   private loadSales(): void {
-    // Getting mock data of 1st sale
     this.sale = this.saleService.getMockSale();
     this.updateTotalAmounts();
   }
@@ -167,13 +129,13 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
     const roundTo2 = value => Math.round(value * 100) / 100;
 
-    const totalAmount = this.sale.items
-      .map(it => it.totalAmount)
+    const totalAmount = this.sale.saleDetails
+      .map(s => s.totalAmount)
       .reduce(reducer, 0);
     this.subTotal = roundTo2(totalAmount);
 
-    const discountAmount = this.sale.items
-      .map(it => it.discountAmount)
+    const discountAmount = this.sale.saleDetails
+      .map(s => s.discountAmount)
       .reduce(reducer, 0);
     this.totalDiscount = roundTo2(discountAmount);
 
