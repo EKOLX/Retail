@@ -20,6 +20,16 @@ export class SaleItemComponent implements OnInit {
     private itemService: ItemService
   ) {}
 
+  get displayName(): string {
+    return `${
+      this.item.name.length > 50
+        ? this.item.name.substring(0, 50).concat("...")
+        : this.item.name
+    } ${this.saleDetail.discount > 0 ? this.saleDetail.discount + "%" : ""} : ${
+      this.item.price
+    }$ - ${this.saleDetail.totalAmount}$`;
+  }
+
   ngOnInit() {
     this.item = this.itemService.getItemById(this.saleDetail.itemId);
   }
@@ -35,20 +45,17 @@ export class SaleItemComponent implements OnInit {
     let message = new Message(null, null, this.item.name, this.item.imageUrl);
     this.communicationService.sendItem(message);
 
-    this.amountChanged.emit(true);
+    this.amountChanged.emit(false);
   }
 
   onRemoveItem(): void {
-    const { saleDetails } = this.sale;
-
+    let isRemoved: boolean = false;
     if (this.saleDetail.quantity > 1) {
       this.saleDetail.quantity -= 1;
     } else {
-      const index = saleDetails.indexOf(this.saleDetail);
-      saleDetails.splice(index, 1);
-      this.communicationService.clearItem();
+      isRemoved = true;
     }
 
-    this.amountChanged.emit(true);
+    this.amountChanged.emit(isRemoved);
   }
 }

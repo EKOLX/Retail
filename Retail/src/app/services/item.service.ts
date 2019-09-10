@@ -11,8 +11,18 @@ export class ItemService {
     this.loadItems();
   }
 
+  getItems(): Array<Item> {
+    return this.items;
+  }
+
   getItemById(id: number): Item {
     return this.items.find(it => it.id == id);
+  }
+
+  addItem(item: Item): boolean {
+    this.items.push(item);
+    // In real app, working with storage would need to confirm data is added
+    return true;
   }
 
   private loadItems(): void {

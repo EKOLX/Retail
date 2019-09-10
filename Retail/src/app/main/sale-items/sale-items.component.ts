@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Subscription } from "rxjs";
 import { Sale, SaleDetail, Item } from "src/app/models/sale.model";
-import { SaleService } from "src/app/services/sale.service";
-import { CommunicationService } from "src/app/services/communication.service";
 import { Message } from "src/app/models/message.model";
 import { Status } from "src/app/models/status.model";
-import { Subscription } from "rxjs";
+import { ItemService } from "src/app/services/item.service";
+import { SaleService } from "src/app/services/sale.service";
+import { CommunicationService } from "src/app/services/communication.service";
 
 @Component({
   selector: "app-sale-items",
@@ -22,6 +23,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
 
   constructor(
     private saleService: SaleService,
+    private itemService: ItemService,
     private communicationService: CommunicationService
   ) {
     this.subscription = this.communicationService
@@ -43,8 +45,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
       });
     this.communicationService.getSale().subscribe(msg => {
       if (msg) {
-        // TODO: Check current sale. If it's empty add selected sale otherwise show dialog about confirmation.
-        if (this.sale.items.length > 0) {
+        if (this.sale.saleDetails.length > 0) {
           alert("Current sale is not empty.");
           return;
         } else {
@@ -70,14 +71,15 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
 
     if (!value) return;
 
+    const itemCount = this.itemService.getItems().length;
     const newItem = new Item(
-      this.sale.items.length + 1,
+      itemCount + 1,
       value,
       this.getRandomIntInclusive(10, 100),
-      1234567890 + this.sale.items.length + 1,
+      1234567890 + itemCount + 1,
       `./assets/new_product${this.getRandomIntInclusive(1, 2)}.jpg`
     );
-    this.sale.items.push(newItem);
+    this.itemService.addItem(newItem);
     const newSaleDetail = new SaleDetail(newItem.id, newItem.price, 1, 0);
     this.sale.saleDetails.push(newSaleDetail);
 
@@ -88,7 +90,14 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
     this.communicationService.sendItem(message);
   }
 
-  onAmountChanged(event: boolean) {
+  onAmountChanged(isRemoved: boolean, saleDetail: SaleDetail) {
+    if (isRemoved) {
+      const { saleDetails } = this.sale;
+      const index = saleDetails.indexOf(saleDetail);
+      saleDetails.splice(index, 1);
+      this.communicationService.clearItem();
+    }
+
     this.updateTotalAmounts();
   }
 
@@ -98,7 +107,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
   }
 
   private saveSale(): void {
-    if (this.sale.items.length > 0) {
+    if (this.sale.saleDetails.length > 0) {
       this.sale = this.saleService.saveSale(this.sale);
       this.communicationService.clearItem();
       this.communicationService.sendSaleInfo(new Message(null, this.sale.id));
@@ -109,7 +118,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
   }
 
   private completeSale(): void {
-    if (this.sale.items.length > 0) {
+    if (this.sale.saleDetails.length > 0) {
       this.sale = this.saleService.completeSale(this.sale);
       this.communicationService.clearItem();
       this.communicationService.sendSaleInfo(new Message(null, this.sale.id));
@@ -120,7 +129,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
   }
 
   private clearSale(): void {
-    this.sale.items = [];
+    this.sale.saleDetails = [];
     this.communicationService.clearItem();
     this.updateTotalAmounts();
   }
@@ -129,17 +138,13 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
     const roundTo2 = value => Math.round(value * 100) / 100;
 
-    const totalAmount = this.sale.saleDetails
-      .map(s => s.totalAmount)
-      .reduce(reducer, 0);
-    this.subTotal = roundTo2(totalAmount);
-
-    const discountAmount = this.sale.saleDetails
-      .map(s => s.discountAmount)
-      .reduce(reducer, 0);
-    this.totalDiscount = roundTo2(discountAmount);
-
-    this.total = roundTo2(this.subTotal - this.totalDiscount);
+    this.subTotal = roundTo2(
+      this.sale.saleDetails.map(s => s.price).reduce(reducer, 0)
+    );
+    this.totalDiscount = roundTo2(
+      this.sale.saleDetails.map(s => s.discountAmount).reduce(reducer, 0)
+    );
+    this.total = roundTo2(this.sale.totalAmount);
   }
 
   private getRandomIntInclusive(min: number, max: number): number {
