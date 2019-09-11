@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
-import { Sale, SaleDetail, Item } from "../models/sale.model";
+import { Sale, SaleDetail } from "../models/sale.model";
+import { Status } from "../models/status.model";
 import { ItemService } from "./item.service";
 
 @Injectable({
@@ -51,8 +52,8 @@ export class SaleService {
     return sale;
   }
 
-  getSales(saved: boolean = false): Array<Sale> {
-    if (saved) return this.savedSales;
+  getSalesByStatus(status: Status = Status.isCompleted): Array<Sale> {
+    if (status == Status.isSaved) return this.savedSales;
     else return this.sales;
   }
 

@@ -6,6 +6,7 @@ import { Status } from "src/app/models/status.model";
 import { ItemService } from "src/app/services/item.service";
 import { SaleService } from "src/app/services/sale.service";
 import { CommunicationService } from "src/app/services/communication.service";
+import { Helper } from "src/app/helpers/helper";
 
 @Component({
   selector: "app-sale-items",
@@ -50,7 +51,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
           return;
         } else {
           this.saveSale();
-          this.sale = this.saleService.removeSavedSaleById(msg.billNumber);
+          this.sale = this.saleService.removeSavedSaleById(msg.saleId);
           this.updateTotalAmounts();
           this.communicationService.sendSaleInfo(
             new Message(null, this.sale.id)
@@ -66,27 +67,24 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
     this.communicationService.sendSaleInfo(new Message(null, this.sale.id));
   }
 
-  onItemEnter(event: KeyboardEvent) {
-    const value = (<HTMLInputElement>event.target).value;
+  onItemEnter(event: HTMLInputElement) {
+    if (!event.value) return;
 
-    if (!value) return;
+    const barcode = parseInt(event.value);
+    let item = this.itemService.getItemByBarcode(barcode);
 
-    const itemCount = this.itemService.getItems().length;
-    const newItem = new Item(
-      itemCount + 1,
-      value,
-      this.getRandomIntInclusive(10, 100),
-      1234567890 + itemCount + 1,
-      `./assets/new_product${this.getRandomIntInclusive(1, 2)}.jpg`
-    );
-    this.itemService.addItem(newItem);
-    const newSaleDetail = new SaleDetail(newItem.id, newItem.price, 1, 0);
+    if (!item) {
+      const itemCount = this.itemService.getItems().length;
+      item = this.itemService.createNewItem(itemCount);
+    }
+
+    const newSaleDetail = new SaleDetail(item.id, item.price, 1, 0);
     this.sale.saleDetails.push(newSaleDetail);
 
     this.itemCode = "";
     this.updateTotalAmounts();
 
-    let message = new Message(null, null, newItem.name, newItem.imageUrl);
+    let message = new Message(null, null, item);
     this.communicationService.sendItem(message);
   }
 
@@ -145,12 +143,6 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
       this.sale.saleDetails.map(s => s.discountAmount).reduce(reducer, 0)
     );
     this.total = roundTo2(this.sale.totalAmount);
-  }
-
-  private getRandomIntInclusive(min: number, max: number): number {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   ngOnDestroy() {

@@ -10,7 +10,6 @@ import { ItemService } from "src/app/services/item.service";
   styleUrls: ["./sale-item.component.sass"]
 })
 export class SaleItemComponent implements OnInit {
-  @Input() sale: Sale;
   @Input() saleDetail: SaleDetail;
   @Output() amountChanged = new EventEmitter<boolean>();
   private item: Item;
@@ -35,14 +34,14 @@ export class SaleItemComponent implements OnInit {
   }
 
   onItemSelect(): void {
-    let message = new Message(null, null, this.item.name, this.item.imageUrl);
+    let message = new Message(null, null, this.item);
     this.communicationService.sendItem(message);
   }
 
   onAddItem(): void {
     this.saleDetail.quantity += 1;
 
-    let message = new Message(null, null, this.item.name, this.item.imageUrl);
+    let message = new Message(null, null, this.item);
     this.communicationService.sendItem(message);
 
     this.amountChanged.emit(false);

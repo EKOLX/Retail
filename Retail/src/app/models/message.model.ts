@@ -1,14 +1,13 @@
 import { Status } from "./status.model";
-import { Sale } from "./sale.model";
+import { Sale, Item } from "./sale.model";
 
 export class Message {
   constructor(
     public status: Status = Status.isNew,
-    public billNumber: number = 0,
-    public itemName: string = null,
-    public itemImageUrl: string = null,
+    public saleId: number = 0,
+    public item: Item = null,
+    public saleList: Array<Sale> = [],
     public showModal: boolean = false,
-    public title: string = null,
-    public saleList: Array<Sale> = []
+    public title: string = null
   ) {}
 }

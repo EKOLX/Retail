@@ -13,7 +13,7 @@ import { SaleService } from "src/app/services/sale.service";
 export class SaleButtonsComponent implements OnInit, OnDestroy {
   billNumber: number;
   itemImageUrl: string;
-  itemName: string;
+  displayName: string;
   private subscription: Subscription;
 
   constructor(
@@ -23,16 +23,16 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
     this.subscription = this.communicationService
       .getSaleInfo()
       .subscribe(msg => {
-        if (msg) this.billNumber = msg.billNumber;
+        if (msg) this.billNumber = msg.saleId;
       });
     this.communicationService.getItem().subscribe(msg => {
       if (msg) {
-        this.itemImageUrl = msg.itemImageUrl;
-        this.itemName = msg.itemName;
+        this.itemImageUrl = msg.item.imageUrl;
+        this.displayName = `${msg.item.name} - barcode: ${msg.item.barcode}`;
       } else {
         // Clear image source if empty image is sent
         this.itemImageUrl = null;
-        this.itemName = null;
+        this.displayName = null;
       }
     });
   }
@@ -43,7 +43,7 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
     const message = new Message(Status.isCompleted);
     message.showModal = true;
     message.title = "Completed list";
-    message.saleList = this.saleService.getSales();
+    message.saleList = this.saleService.getSalesByStatus();
     this.communicationService.sendShowModal(message);
   }
 
@@ -51,7 +51,7 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
     const message = new Message(Status.isSaved);
     message.showModal = true;
     message.title = "Incompleted list";
-    message.saleList = this.saleService.getSales(true);
+    message.saleList = this.saleService.getSalesByStatus(Status.isSaved);
     this.communicationService.sendShowModal(message);
   }
 
