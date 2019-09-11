@@ -11,6 +11,7 @@ import { SaleItemsComponent } from "./main/sale-items/sale-items.component";
 import { SaleButtonsComponent } from "./main/sale-buttons/sale-buttons.component";
 import { SaleListComponent } from "./main/sale-list/sale-list.component";
 import { SaleItemComponent } from './main/sale-items/sale-item/sale-item.component';
+import { ModalWindowComponent } from './dialog-box/modal-window/modal-window.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { SaleItemComponent } from './main/sale-items/sale-item/sale-item.compone
     SaleItemsComponent,
     SaleButtonsComponent,
     SaleListComponent,
-    SaleItemComponent
+    SaleItemComponent,
+    ModalWindowComponent
   ],
   imports: [
     BrowserModule,
