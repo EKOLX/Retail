@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef
+} from "@angular/core";
 import { Subscription } from "rxjs";
 import { Sale, SaleDetail, Item } from "src/app/models/sale.model";
 import { Message } from "src/app/models/message.model";
@@ -6,7 +12,6 @@ import { Status } from "src/app/models/status.model";
 import { ItemService } from "src/app/services/item.service";
 import { SaleService } from "src/app/services/sale.service";
 import { CommunicationService } from "src/app/services/communication.service";
-import { Helper } from "src/app/helpers/helper";
 
 @Component({
   selector: "app-sale-items",
@@ -21,6 +26,8 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
   totalDiscount: number;
   total: number;
   private subscription: Subscription;
+
+  @ViewChild("itemBarcode", { static: false }) itemBarcode: ElementRef;
 
   constructor(
     private saleService: SaleService,
@@ -68,6 +75,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
   }
 
   onItemEnter(event: HTMLInputElement) {
+    // Can use {this.itemCode} as well as {this.itemBarcode.nativeElement.value}
     if (!event.value) return;
 
     const barcode = parseInt(event.value);
