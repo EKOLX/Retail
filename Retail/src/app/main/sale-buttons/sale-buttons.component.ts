@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
 import { CommunicationService } from "src/app/services/communication.service";
 import { Message } from "src/app/models/message.model";
-import { Status } from "src/app/models/status.model";
+import { Status, ModalSize, ModalDialog } from "src/app/models/state.model";
 import { SaleService } from "src/app/services/sale.service";
 
 @Component({
@@ -14,6 +14,7 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
   billNumber: number;
   itemImageUrl: string;
   displayName: string;
+  modalDialog: ModalDialog;
   private subscription: Subscription;
 
   constructor(
@@ -35,6 +36,8 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
         this.displayName = null;
       }
     });
+
+    this.modalDialog = new ModalDialog();
   }
 
   ngOnInit() {}
@@ -56,7 +59,16 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
   }
 
   onSave(): void {
-    this.communicationService.sendSaleStatus(new Message(Status.isSaved));
+    this.modalDialog.modalType = "Saved";
+    this.modalDialog.modalSize = ModalSize.SM;
+    this.modalDialog.modalTitle = "Saving confirmation";
+    this.modalDialog.modalContent =
+      "Do you want to save the current sale and continue with new one?";
+  }
+
+  onConfirmClicked(): void {
+    if (this.modalDialog.modalType == "Saved")
+      this.communicationService.sendSaleStatus(new Message(Status.isSaved));
   }
 
   onClear(): void {

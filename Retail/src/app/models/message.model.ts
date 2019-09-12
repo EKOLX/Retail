@@ -1,4 +1,4 @@
-import { Status } from "./status.model";
+import { Status } from "./state.model";
 import { Sale, Item } from "./sale.model";
 
 export class Message {

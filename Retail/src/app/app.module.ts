@@ -12,6 +12,7 @@ import { SaleButtonsComponent } from "./main/sale-buttons/sale-buttons.component
 import { SaleListComponent } from "./main/sale-list/sale-list.component";
 import { SaleItemComponent } from './main/sale-items/sale-item/sale-item.component';
 import { ModalWindowComponent } from './dialog-box/modal-window/modal-window.component';
+import { ConfirmationComponent } from './dialog-box/confirmation/confirmation.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ModalWindowComponent } from './dialog-box/modal-window/modal-window.com
     SaleButtonsComponent,
     SaleListComponent,
     SaleItemComponent,
-    ModalWindowComponent
+    ModalWindowComponent,
+    ConfirmationComponent
   ],
   imports: [
     BrowserModule,

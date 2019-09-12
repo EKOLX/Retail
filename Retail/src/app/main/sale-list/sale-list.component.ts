@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { CommunicationService } from "src/app/services/communication.service";
 import { Subscription } from "rxjs";
 import { Sale } from "src/app/models/sale.model";
-import { Status } from "src/app/models/status.model";
+import { Status } from "src/app/models/state.model";
 import { Message } from "src/app/models/message.model";
 
 // This lets me use jQuery

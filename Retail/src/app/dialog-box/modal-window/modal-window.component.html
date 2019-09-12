@@ -1,5 +1,5 @@
 <div id="cmptModal" class="modal fade">
-  <div class="modal-dialog modal-lg">
+  <div [ngClass]="getModalDialogClass()">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">{{ title }}</h4>
@@ -11,23 +11,10 @@
         <ng-content></ng-content>
       </div>
       <div class="modal-footer">
-        <button
-          *ngIf="showButton1"
-          class="btn btn-info"
-          (click)="onButton1Click()"
-          [disabled]="!enableButton1"
-        >
-          {{ button1 }}
+        <button *ngIf="showButton1" class="btn btn-info" (click)="onButton1Click()" [disabled]="!enableButton1">
+          {{ button1Title }}
         </button>
         <button class="btn btn-secondary" (click)="hideModal()">Close</button>
-
-        <!-- this button is hidden, used to close from typescript -->
-        <button
-          id="btnClose"
-          type="button"
-          data-dismiss="modal"
-          style="display: none;"
-        ></button>
       </div>
     </div>
   </div>

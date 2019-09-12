@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Sale, SaleDetail } from "../models/sale.model";
-import { Status } from "../models/status.model";
+import { Status } from "../models/state.model";
 import { ItemService } from "./item.service";
 
 @Injectable({

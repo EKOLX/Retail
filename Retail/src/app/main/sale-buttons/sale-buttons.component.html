@@ -27,7 +27,7 @@
     </button>
   </div>
   <div class="col-md-6 p-1">
-    <button type="button" class="btn btn-info w-100" (click)="onSave()">
+    <button type="button" class="btn btn-info w-100" data-toggle="modal" data-target="#cmptModal" (click)="onSave()">
       <i class="fa fa-share-square mr-2"></i>Save
     </button>
   </div>
@@ -44,4 +44,7 @@
     </button>
   </div>
 </div>
+<!-- modal windows -->
 <app-sale-list></app-sale-list>
+<app-confirmation [modalSize]="modalDialog.modalSize" [title]="modalDialog.modalTitle"
+  [content]="modalDialog.modalContent" (confirmClicked)="onConfirmClicked()"></app-confirmation>

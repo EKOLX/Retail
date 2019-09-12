@@ -8,7 +8,7 @@ import {
 import { Subscription } from "rxjs";
 import { Sale, SaleDetail, Item } from "src/app/models/sale.model";
 import { Message } from "src/app/models/message.model";
-import { Status } from "src/app/models/status.model";
+import { Status } from "src/app/models/state.model";
 import { ItemService } from "src/app/services/item.service";
 import { SaleService } from "src/app/services/sale.service";
 import { CommunicationService } from "src/app/services/communication.service";
