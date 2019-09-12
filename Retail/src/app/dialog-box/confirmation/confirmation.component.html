@@ -1,4 +1,12 @@
-<app-modal-window [modalSize]="modalSize" [title]="title" [showButton1]="true" [enableButton1]="true"
-    [button1Title]="'Confirm'" (button1Clicked)="onConfirmClicked()">
-    <h5>{{content}}</h5>
+<app-modal-window
+  [modalId]="'cmptModal'"
+  [modalSize]="modalSize"
+  [modalNature]="modalNature"
+  [title]="title"
+  [showButton1]="true"
+  [enableButton1]="true"
+  [button1Title]="'Confirm'"
+  (button1Clicked)="onConfirmClicked()"
+>
+  <h5>{{ content }}</h5>
 </app-modal-window>

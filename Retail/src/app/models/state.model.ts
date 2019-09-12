@@ -6,16 +6,34 @@ export enum Status {
 }
 
 export enum ModalSize {
-  SM = "modal-sm",
-  LG = "modal-lg",
-  XL = "modal-xl"
+  sm = "modal-sm",
+  lg = "modal-lg",
+  xl = "modal-xl"
+}
+
+export enum ModalNature {
+  primary = "primary",
+  info = "info",
+  success = "success",
+  danger = "danger",
+  warning = "warning",
+  secondary = "secondary"
 }
 
 export class ModalDialog {
-  modalType: ModalType;
-  modalSize: ModalSize;
-  modalTitle: string;
-  modalContent: string;
+  constructor(
+    public type: ModalType = "None",
+    public size: ModalSize = ModalSize.sm,
+    public nature: ModalNature = ModalNature.primary,
+    public title: string = "",
+    public content: string = ""
+  ) {}
 }
 
-type ModalType = "Saved" | "Completed" | "Cleared";
+type ModalType =
+  | "None"
+  | "Saved"
+  | "Completed"
+  | "Cleared"
+  | "CompletedList"
+  | "IncompletedList";

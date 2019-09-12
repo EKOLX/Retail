@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { ModalSize } from "src/app/models/state.model";
+import { ModalSize, ModalNature } from "src/app/models/state.model";
 
 @Component({
   selector: "app-confirmation",
@@ -8,6 +8,7 @@ import { ModalSize } from "src/app/models/state.model";
 })
 export class ConfirmationComponent implements OnInit {
   @Input() modalSize: ModalSize;
+  @Input() modalNature: ModalNature;
   @Input() title: string;
   @Input() content: string;
   @Output() confirmClicked = new EventEmitter();

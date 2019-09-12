@@ -1,8 +1,8 @@
-<div id="cmptModal" class="modal fade">
-  <div [ngClass]="getModalDialogClass()">
+<div id="{{ modalId }}" class="modal fade">
+  <div [ngClass]="getDialogClass()">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">{{ title }}</h4>
+        <h4 [ngClass]="getTitleClass()">{{ title }}</h4>
         <button type="button" class="close" (click)="hideModal()">
           &times;
         </button>
@@ -11,10 +11,15 @@
         <ng-content></ng-content>
       </div>
       <div class="modal-footer">
-        <button *ngIf="showButton1" class="btn btn-info" (click)="onButton1Click()" [disabled]="!enableButton1">
+        <button
+          *ngIf="showButton1"
+          [ngClass]="getButtonClass()"
+          (click)="onButton1Click()"
+          [disabled]="!enableButton1"
+        >
           {{ button1Title }}
         </button>
-        <button class="btn btn-secondary" (click)="hideModal()">Close</button>
+        <button class="btn btn-secondary" (click)="hideModal()">Cancel</button>
       </div>
     </div>
   </div>

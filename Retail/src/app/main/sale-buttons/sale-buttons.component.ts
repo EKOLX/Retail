@@ -1,9 +1,15 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
+import { SaleService } from "src/app/services/sale.service";
 import { CommunicationService } from "src/app/services/communication.service";
 import { Message } from "src/app/models/message.model";
-import { Status, ModalSize, ModalDialog } from "src/app/models/state.model";
-import { SaleService } from "src/app/services/sale.service";
+import {
+  Status,
+  ModalSize,
+  ModalDialog,
+  ModalNature
+} from "src/app/models/state.model";
+import { Sale } from "src/app/models/sale.model";
 
 @Component({
   selector: "app-sale-buttons",
@@ -13,7 +19,9 @@ import { SaleService } from "src/app/services/sale.service";
 export class SaleButtonsComponent implements OnInit, OnDestroy {
   billNumber: number;
   itemImageUrl: string;
-  displayName: string;
+  itemDisplayName: string;
+  showSaleItemButton1: boolean;
+  saleItemCollection: Array<Sale> = [];
   modalDialog: ModalDialog;
   private subscription: Subscription;
 
@@ -29,11 +37,11 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
     this.communicationService.getItem().subscribe(msg => {
       if (msg) {
         this.itemImageUrl = msg.item.imageUrl;
-        this.displayName = `${msg.item.name} - barcode: ${msg.item.barcode}`;
+        this.itemDisplayName = `${msg.item.name} - barcode: ${msg.item.barcode}`;
       } else {
         // Clear image source if empty image is sent
         this.itemImageUrl = null;
-        this.displayName = null;
+        this.itemDisplayName = null;
       }
     });
 
@@ -42,41 +50,67 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {}
 
-  showCompleted(): void {
-    const message = new Message(Status.isCompleted);
-    message.showModal = true;
-    message.title = "Completed list";
-    message.saleList = this.saleService.getSalesByStatus();
-    this.communicationService.sendShowModal(message);
+  onCompleted(): void {
+    this.modalDialog = new ModalDialog(
+      "CompletedList",
+      ModalSize.lg,
+      ModalNature.secondary,
+      "Completed list"
+    );
+    this.showSaleItemButton1 = false;
+    this.saleItemCollection = this.saleService.getSalesByStatus();
   }
 
-  showIncompleted(): void {
-    const message = new Message(Status.isSaved);
-    message.showModal = true;
-    message.title = "Incompleted list";
-    message.saleList = this.saleService.getSalesByStatus(Status.isSaved);
-    this.communicationService.sendShowModal(message);
+  onIncompleted(): void {
+    this.modalDialog = new ModalDialog(
+      "IncompletedList",
+      ModalSize.lg,
+      ModalNature.secondary,
+      "Incompleted list"
+    );
+    this.showSaleItemButton1 = true;
+    this.saleItemCollection = this.saleService.getSalesByStatus(Status.isSaved);
   }
 
   onSave(): void {
-    this.modalDialog.modalType = "Saved";
-    this.modalDialog.modalSize = ModalSize.SM;
-    this.modalDialog.modalTitle = "Saving confirmation";
-    this.modalDialog.modalContent =
-      "Do you want to save the current sale and continue with new one?";
-  }
-
-  onConfirmClicked(): void {
-    if (this.modalDialog.modalType == "Saved")
-      this.communicationService.sendSaleStatus(new Message(Status.isSaved));
+    this.modalDialog = new ModalDialog(
+      "Saved",
+      ModalSize.sm,
+      ModalNature.info,
+      "Saving confirmation",
+      "Do you want to save the current sale and continue with new one?"
+    );
   }
 
   onClear(): void {
-    this.communicationService.sendSaleStatus(new Message(Status.isRemoved));
+    this.modalDialog = new ModalDialog(
+      "Cleared",
+      ModalSize.sm,
+      ModalNature.danger,
+      "Canceling sale",
+      "Are you sure, you want to delete the sale?"
+    );
   }
 
   onComplete(): void {
-    this.communicationService.sendSaleStatus(new Message(Status.isCompleted));
+    this.modalDialog = new ModalDialog(
+      "Completed",
+      ModalSize.sm,
+      ModalNature.success,
+      "Completing sale",
+      "Do you want to complete the sale?"
+    );
+  }
+
+  onConfirmClicked(): void {
+    if (this.modalDialog.type == "Saved")
+      this.communicationService.sendSaleStatus(new Message(Status.isSaved));
+    else if (this.modalDialog.type == "Cleared")
+      this.communicationService.sendSaleStatus(new Message(Status.isRemoved));
+    else if (this.modalDialog.type == "Completed")
+      this.communicationService.sendSaleStatus(new Message(Status.isCompleted));
+    else if (this.modalDialog.type == "IncompletedList") {
+    }
   }
 
   ngOnDestroy() {

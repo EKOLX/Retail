@@ -1,8 +1,12 @@
 <h6>Bill № {{ billNumber }}</h6>
 <div class="row">
   <div class="col-md-12">
-    <img src="{{ itemImageUrl }}" onerror="this.src='./assets/empty.png'" alt="Select an item to see image"
-      class="rounded img-responsive w-100 h-100" />
+    <img
+      src="{{ itemImageUrl }}"
+      onerror="this.src='./assets/empty.png'"
+      alt="Select an item to see image"
+      class="rounded img-responsive w-100 h-100"
+    />
     <div *ngIf="!itemImageUrl" class="carousel-caption">
       <p class="text-info text-center font-weight-bold">
         Select an item to see image
@@ -10,41 +14,78 @@
     </div>
   </div>
   <div class="col-md-12">
-    <h5 class="font-weight-bold">{{ displayName }}</h5>
+    <h5 class="font-weight-bold">{{ itemDisplayName }}</h5>
   </div>
 </div>
 <div class="row">
   <div class="col-md-6 p-1">
-    <button type="button" class="btn btn-secondary w-100" data-toggle="modal" data-target="#cmptSaleList"
-      (click)="showCompleted()">
+    <button
+      type="button"
+      class="btn btn-secondary w-100"
+      data-toggle="modal"
+      data-target="#cmptSaleList"
+      (click)="onCompleted()"
+    >
       <i class="fa fa-list mr-2"></i>Completed
     </button>
   </div>
   <div class="col-md-6 p-1">
-    <button type="button" class="btn btn-warning w-100" data-toggle="modal" data-target="#cmptSaleList"
-      (click)="showIncompleted()">
+    <button
+      type="button"
+      class="btn btn-warning w-100"
+      data-toggle="modal"
+      data-target="#cmptSaleList"
+      (click)="onIncompleted()"
+    >
       <i class="fa fa-hourglass-start mr-2"></i>Incompleted
     </button>
   </div>
   <div class="col-md-6 p-1">
-    <button type="button" class="btn btn-info w-100" data-toggle="modal" data-target="#cmptModal" (click)="onSave()">
+    <button
+      type="button"
+      class="btn btn-info w-100"
+      data-toggle="modal"
+      data-target="#cmptModal"
+      (click)="onSave()"
+    >
       <i class="fa fa-share-square mr-2"></i>Save
     </button>
   </div>
   <div class="col-md-6 p-1">
-    <button type="button" class="btn btn-danger w-100" (click)="onClear()">
+    <button
+      type="button"
+      class="btn btn-danger w-100"
+      data-toggle="modal"
+      data-target="#cmptModal"
+      (click)="onClear()"
+    >
       <i class="fa fa-trash mr-2"></i>Clear
     </button>
   </div>
 </div>
 <div class="row">
   <div class="col-md-12 p-1">
-    <button type="button" class="btn btn-success w-100" (click)="onComplete()">
+    <button
+      type="button"
+      class="btn btn-success w-100"
+      data-toggle="modal"
+      data-target="#cmptModal"
+      (click)="onComplete()"
+    >
       <i class="fa fa-cart-arrow-down mr-2"></i>Complete
     </button>
   </div>
 </div>
 <!-- modal windows -->
-<app-sale-list></app-sale-list>
-<app-confirmation [modalSize]="modalDialog.modalSize" [title]="modalDialog.modalTitle"
-  [content]="modalDialog.modalContent" (confirmClicked)="onConfirmClicked()"></app-confirmation>
+<app-sale-list
+  [title]="modalDialog.title"
+  [showSaleItemButton1]="showSaleItemButton1"
+  [sales]="saleItemCollection"
+></app-sale-list>
+<app-confirmation
+  [modalSize]="modalDialog.size"
+  [modalNature]="modalDialog.nature"
+  [title]="modalDialog.title"
+  [content]="modalDialog.content"
+  (confirmClicked)="onConfirmClicked()"
+></app-confirmation>

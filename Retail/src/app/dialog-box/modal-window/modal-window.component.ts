@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { ModalSize } from "src/app/models/state.model";
+import { ModalSize, ModalNature } from "src/app/models/state.model";
 
 // This lets me use jQuery
 declare var $: any;
@@ -10,7 +10,9 @@ declare var $: any;
   styleUrls: ["./modal-window.component.sass"]
 })
 export class ModalWindowComponent implements OnInit {
+  @Input() modalId: string;
   @Input() modalSize: ModalSize;
+  @Input() modalNature: ModalNature;
   @Input() title: string;
   @Input() button1Title: string;
   @Input() showButton1: boolean = false;
@@ -19,8 +21,16 @@ export class ModalWindowComponent implements OnInit {
 
   ngOnInit() {}
 
-  getModalDialogClass(): string {
+  getDialogClass(): string {
     return `modal-dialog ${this.modalSize}`;
+  }
+
+  getTitleClass(): string {
+    return `modal-title text-${this.modalNature}`;
+  }
+
+  getButtonClass(): string {
+    return `btn btn-${this.modalNature}`;
   }
 
   onButton1Click(): void {
@@ -29,10 +39,10 @@ export class ModalWindowComponent implements OnInit {
   }
 
   showModal(): void {
-    $("#cmptModal").modal("show");
+    $(`#${this.modalId}`).modal("show");
   }
 
   hideModal(): void {
-    $("#cmptModal").modal("hide");
+    $(`#${this.modalId}`).modal("hide");
   }
 }

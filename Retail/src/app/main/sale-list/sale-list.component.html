@@ -1,43 +1,37 @@
-<div id="cmptSaleList" class="modal fade">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">{{ title }}</h4>
-        <button type="button" class="close" (click)="hideModal()">
-          &times;
-        </button>
-      </div>
-      <div *ngIf="sales.length > 0" class="modal-body">
-        <table class="table table-striped">
-          <thead>
-            <tr class="table-info">
-              <th scope="col">№</th>
-              <th scope="col">Date</th>
-              <th scope="col">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let sale of sales" [ngClass]="getSaleClass(sale.id)" style="cursor: pointer;"
-              (click)="onSelectSale(sale.id)">
-              <td>{{ sale.id }}</td>
-              <td>{{ sale.date }}</td>
-              <td>{{ sale.totalAmount }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div *ngIf="sales.length == 0">
-        <p class="text-center font-italic">List is empty.</p>
-      </div>
-      <div class="modal-footer">
-        <button *ngIf="isIncompleted" class="btn btn-info" (click)="onRestore()" [disabled]="selectedSaleId==0">
-          Restore
-        </button>
-        <button class="btn btn-secondary" (click)="hideModal()">Close</button>
-
-        <!-- this button is hidden, used to close from typescript -->
-        <button id="btnClose" type="button" data-dismiss="modal" style="display: none;"></button>
-      </div>
-    </div>
+<app-modal-window
+  [modalId]="'cmptSaleList'"
+  [modalSize]="modalSize"
+  [modalNature]="modalNature"
+  [title]="title"
+  [showButton1]="showSaleItemButton1"
+  [enableButton1]="selectedSaleId > 0"
+  [button1Title]="'Restore'"
+  (button1Clicked)="onRestore()"
+>
+  <div *ngIf="sales.length > 0">
+    <table class="table table-striped">
+      <thead>
+        <tr class="table-info">
+          <th scope="col">№</th>
+          <th scope="col">Date</th>
+          <th scope="col">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let sale of sales"
+          [ngClass]="getSaleClass(sale.id)"
+          style="cursor: pointer;"
+          (click)="onSelectSale(sale.id)"
+        >
+          <td>{{ sale.id }}</td>
+          <td>{{ sale.date }}</td>
+          <td>{{ sale.totalAmount }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-</div>
+  <div *ngIf="sales.length == 0">
+    <p class="text-center font-italic">List is empty.</p>
+  </div>
+</app-modal-window>
