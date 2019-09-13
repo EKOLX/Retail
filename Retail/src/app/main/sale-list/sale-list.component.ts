@@ -34,6 +34,14 @@ export class SaleListComponent implements OnInit, OnDestroy {
     this.selectedSaleId = id;
   }
 
+  onCancelClicked(): void {
+    this.selectedSaleId = 0;
+  }
+
+  getSaleClass(id: number): string {
+    return this.selectedSaleId == id ? "table-primary" : "";
+  }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }

@@ -1,7 +1,15 @@
-<app-modal-window [modalId]="'cmptSaleList'" [modalSize]="modalSize" [modalNature]="modalNature" [title]="title"
-  [showButton1]="showSaleItemButton1" [enableButton1]="selectedSaleId > 0" [button1Title]="'Restore'"
-  (button1Clicked)="onRestore()">
-  <div *ngIf="sales.length > 0">
+<app-modal-window
+  [modalId]="'cmptSaleList'"
+  [modalSize]="modalSize"
+  [modalNature]="modalNature"
+  [title]="title"
+  [showButton1]="showSaleItemButton1"
+  [enableButton1]="selectedSaleId > 0"
+  [button1Title]="'Restore'"
+  (cancelClicked)="onCancelClicked()"
+  (button1Clicked)="onRestore()"
+>
+  <ng-template [ngIf]="sales.length > 0">
     <table class="table table-striped">
       <thead>
         <tr class="table-info">
@@ -11,14 +19,21 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let sale of sales" style="cursor: pointer;" (click)="onSelectSale(sale.id)" appHighlight>
+        <tr
+          *ngFor="let sale of sales"
+          [ngClass]="getSaleClass(sale.id)"
+          style="cursor: pointer;"
+          (click)="onSelectSale(sale.id)"
+          appHighlight
+          [bgColor]="'bg-info'"
+        >
           <td>{{ sale.id }}</td>
           <td>{{ sale.date }}</td>
           <td>{{ sale.totalAmount }}</td>
         </tr>
       </tbody>
     </table>
-  </div>
+  </ng-template>
   <div *ngIf="sales.length == 0">
     <p class="text-center font-italic">List is empty.</p>
   </div>

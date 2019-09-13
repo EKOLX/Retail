@@ -18,6 +18,7 @@ export class ModalWindowComponent implements OnInit {
   @Input() showButton1: boolean = false;
   @Input() enableButton1: boolean = false;
   @Output() button1Clicked = new EventEmitter();
+  @Output() cancelClicked = new EventEmitter();
 
   ngOnInit() {}
 
@@ -44,5 +45,6 @@ export class ModalWindowComponent implements OnInit {
 
   hideModal(): void {
     $(`#${this.modalId}`).modal("hide");
+    this.cancelClicked.emit();
   }
 }
