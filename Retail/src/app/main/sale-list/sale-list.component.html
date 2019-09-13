@@ -1,13 +1,6 @@
-<app-modal-window
-  [modalId]="'cmptSaleList'"
-  [modalSize]="modalSize"
-  [modalNature]="modalNature"
-  [title]="title"
-  [showButton1]="showSaleItemButton1"
-  [enableButton1]="selectedSaleId > 0"
-  [button1Title]="'Restore'"
-  (button1Clicked)="onRestore()"
->
+<app-modal-window [modalId]="'cmptSaleList'" [modalSize]="modalSize" [modalNature]="modalNature" [title]="title"
+  [showButton1]="showSaleItemButton1" [enableButton1]="selectedSaleId > 0" [button1Title]="'Restore'"
+  (button1Clicked)="onRestore()">
   <div *ngIf="sales.length > 0">
     <table class="table table-striped">
       <thead>
@@ -18,12 +11,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          *ngFor="let sale of sales"
-          [ngClass]="getSaleClass(sale.id)"
-          style="cursor: pointer;"
-          (click)="onSelectSale(sale.id)"
-        >
+        <tr *ngFor="let sale of sales" style="cursor: pointer;" (click)="onSelectSale(sale.id)" appHighlight>
           <td>{{ sale.id }}</td>
           <td>{{ sale.date }}</td>
           <td>{{ sale.totalAmount }}</td>

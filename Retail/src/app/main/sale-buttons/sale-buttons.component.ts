@@ -109,8 +109,6 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
       this.communicationService.sendSaleStatus(new Message(Status.isRemoved));
     else if (this.modalDialog.type == "Completed")
       this.communicationService.sendSaleStatus(new Message(Status.isCompleted));
-    else if (this.modalDialog.type == "IncompletedList") {
-    }
   }
 
   ngOnDestroy() {

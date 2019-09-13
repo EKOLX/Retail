@@ -13,6 +13,7 @@ import { SaleListComponent } from "./main/sale-list/sale-list.component";
 import { SaleItemComponent } from './main/sale-items/sale-item/sale-item.component';
 import { ModalWindowComponent } from './dialog-box/modal-window/modal-window.component';
 import { ConfirmationComponent } from './dialog-box/confirmation/confirmation.component';
+import { HighlightDirective } from './directives/highlight.directive';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ConfirmationComponent } from './dialog-box/confirmation/confirmation.co
     SaleListComponent,
     SaleItemComponent,
     ModalWindowComponent,
-    ConfirmationComponent
+    ConfirmationComponent,
+    HighlightDirective
   ],
   imports: [
     BrowserModule,

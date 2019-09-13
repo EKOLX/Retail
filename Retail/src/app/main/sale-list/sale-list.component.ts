@@ -30,10 +30,6 @@ export class SaleListComponent implements OnInit, OnDestroy {
     );
   }
 
-  getSaleClass(id: number): string {
-    return this.selectedSaleId == id ? "table-primary" : "";
-  }
-
   onSelectSale(id: number): void {
     this.selectedSaleId = id;
   }
