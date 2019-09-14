@@ -2,9 +2,6 @@ import { Injectable } from "@angular/core";
 import { Subject, Observable } from "rxjs";
 import { Message } from "../models/message.model";
 
-@Injectable({
-  providedIn: "root"
-})
 export class CommunicationService {
   private saleSubject = new Subject<Message>();
   private saleInfoSubject = new Subject<Message>();

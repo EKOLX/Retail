@@ -10,10 +10,13 @@ import { HeaderComponent } from "./header/header.component";
 import { SaleItemsComponent } from "./main/sale-items/sale-items.component";
 import { SaleButtonsComponent } from "./main/sale-buttons/sale-buttons.component";
 import { SaleListComponent } from "./main/sale-list/sale-list.component";
-import { SaleItemComponent } from './main/sale-items/sale-item/sale-item.component';
-import { ModalWindowComponent } from './dialog-box/modal-window/modal-window.component';
-import { ConfirmationComponent } from './dialog-box/confirmation/confirmation.component';
-import { HighlightDirective } from './directives/highlight.directive';
+import { SaleItemComponent } from "./main/sale-items/sale-item/sale-item.component";
+import { ModalWindowComponent } from "./dialog-box/modal-window/modal-window.component";
+import { ConfirmationComponent } from "./dialog-box/confirmation/confirmation.component";
+
+import { HighlightDirective } from "./directives/highlight.directive";
+
+import { CommunicationService } from "./services/communication.service";
 
 @NgModule({
   declarations: [
@@ -33,7 +36,7 @@ import { HighlightDirective } from './directives/highlight.directive';
     FormsModule,
     AngularFontAwesomeModule
   ],
-  providers: [],
+  providers: [CommunicationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
