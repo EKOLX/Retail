@@ -1,3 +1,5 @@
+import { EventEmitter } from "@angular/core";
+
 export enum Status {
   isNew = 0,
   isSaved = 1,
@@ -26,9 +28,22 @@ export class ModalDialog {
     public size: ModalSize = ModalSize.sm,
     public nature: ModalNature = ModalNature.primary,
     public title: string = "",
-    public content: string = ""
+    public content: string = "",
+    public buttons: Array<ModalButton> = []
   ) {}
 }
+
+export class ModalButton {
+  constructor(
+    public id: ModalButtonId = "button1",
+    public title: string = "",
+    public visible: boolean = false,
+    public enabled: boolean = false,
+    public clicked = new EventEmitter()
+  ) {}
+}
+
+type ModalButtonId = "button1" | "button2" | "button3";
 
 type ModalType =
   | "None"

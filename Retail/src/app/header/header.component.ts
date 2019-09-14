@@ -17,12 +17,12 @@ export class HeaderComponent implements OnInit {
     this.updateDateTime();
   }
 
+  ngOnInit() {
+    setInterval(() => this.updateDateTime(), 1000);
+  }
+
   private updateDateTime(): void {
     const date: Date = new Date();
     this.currentDateTime = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-  }
-
-  ngOnInit() {
-    setInterval(() => this.updateDateTime(), 1000);
   }
 }

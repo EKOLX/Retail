@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, EventEmitter } from "@angular/core";
 import { Subscription } from "rxjs";
 import { SaleService } from "src/app/services/sale.service";
 import { CommunicationService } from "src/app/services/communication.service";
@@ -7,21 +7,19 @@ import {
   Status,
   ModalSize,
   ModalDialog,
-  ModalNature
+  ModalNature,
+  ModalButton
 } from "src/app/models/state.model";
-import { Sale } from "src/app/models/sale.model";
 
 @Component({
   selector: "app-sale-buttons",
   templateUrl: "./sale-buttons.component.html",
   styleUrls: ["./sale-buttons.component.sass"]
 })
-export class SaleButtonsComponent implements OnInit, OnDestroy {
+export class SaleButtonsComponent implements OnDestroy {
   billNumber: number;
   itemImageUrl: string;
   itemDisplayName: string;
-  showSaleItemButton1: boolean;
-  saleItemCollection: Array<Sale> = [];
   modalDialog: ModalDialog;
   private subscription: Subscription;
 
@@ -48,8 +46,6 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
     this.modalDialog = new ModalDialog();
   }
 
-  ngOnInit() {}
-
   onCompleted(): void {
     this.modalDialog = new ModalDialog(
       "CompletedList",
@@ -57,8 +53,7 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
       ModalNature.secondary,
       "Completed list"
     );
-    this.showSaleItemButton1 = false;
-    this.saleItemCollection = this.saleService.getSalesByStatus();
+    this.modalDialog.buttons.push(new ModalButton("button1", "", false, false));
   }
 
   onIncompleted(): void {
@@ -68,8 +63,9 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
       ModalNature.secondary,
       "Incompleted list"
     );
-    this.showSaleItemButton1 = true;
-    this.saleItemCollection = this.saleService.getSalesByStatus(Status.isSaved);
+    this.modalDialog.buttons.push(
+      new ModalButton("button1", "Restore", true, false)
+    );
   }
 
   onSave(): void {
@@ -79,6 +75,9 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
       ModalNature.info,
       "Saving confirmation",
       "Do you want to save the current sale and continue with new one?"
+    );
+    this.modalDialog.buttons.push(
+      new ModalButton("button1", "Confirm", true, true)
     );
   }
 
@@ -90,6 +89,9 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
       "Canceling sale",
       "Are you sure, you want to delete the sale?"
     );
+    this.modalDialog.buttons.push(
+      new ModalButton("button1", "Delete", true, true)
+    );
   }
 
   onComplete(): void {
@@ -99,6 +101,9 @@ export class SaleButtonsComponent implements OnInit, OnDestroy {
       ModalNature.success,
       "Completing sale",
       "Do you want to complete the sale?"
+    );
+    this.modalDialog.buttons.push(
+      new ModalButton("button1", "Shop", true, true)
     );
   }
 

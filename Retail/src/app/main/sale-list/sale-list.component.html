@@ -1,18 +1,12 @@
 <app-modal-window
   [modalId]="'cmptSaleList'"
-  [modalSize]="modalSize"
-  [modalNature]="modalNature"
-  [title]="title"
-  [showButton1]="showSaleItemButton1"
-  [enableButton1]="selectedSaleId > 0"
-  [button1Title]="'Restore'"
+  [modalDialog]="modalDialog"
   (cancelClicked)="onCancelClicked()"
-  (button1Clicked)="onRestore()"
 >
   <ng-template [ngIf]="sales.length > 0">
-    <table class="table table-striped">
+    <table class="table">
       <thead>
-        <tr class="table-info">
+        <tr class="table-dark">
           <th scope="col">№</th>
           <th scope="col">Date</th>
           <th scope="col">Total</th>
@@ -28,7 +22,7 @@
           [bgColor]="'bg-info'"
         >
           <td>{{ sale.id }}</td>
-          <td>{{ sale.date }}</td>
+          <td>{{ sale.date.toLocaleDateString() }}</td>
           <td>{{ sale.totalAmount }}</td>
         </tr>
       </tbody>

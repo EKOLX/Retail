@@ -77,15 +77,8 @@
   </div>
 </div>
 <!-- modal windows -->
-<app-sale-list
-  [title]="modalDialog.title"
-  [showSaleItemButton1]="showSaleItemButton1"
-  [sales]="saleItemCollection"
-></app-sale-list>
+<app-sale-list [modalDialog]="modalDialog"></app-sale-list>
 <app-confirmation
-  [modalSize]="modalDialog.size"
-  [modalNature]="modalDialog.nature"
-  [title]="modalDialog.title"
-  [content]="modalDialog.content"
+  [modalDialog]="modalDialog"
   (confirmClicked)="onConfirmClicked()"
 ></app-confirmation>
