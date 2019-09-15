@@ -10,6 +10,7 @@ import {
   ModalNature,
   ModalButton
 } from "src/app/models/state.model";
+import { Item } from "src/app/models/sale.model";
 
 @Component({
   selector: "app-sale-buttons",
@@ -18,6 +19,7 @@ import {
 })
 export class SaleButtonsComponent implements OnDestroy {
   billNumber: number;
+  item: Item;
   itemImageUrl: string;
   itemDisplayName: string;
   modalDialog: ModalDialog;
@@ -34,6 +36,7 @@ export class SaleButtonsComponent implements OnDestroy {
       });
     this.communicationService.getItem().subscribe(msg => {
       if (msg) {
+        this.item = msg.item;
         this.itemImageUrl = msg.item.imageUrl;
         this.itemDisplayName = `${msg.item.name} - barcode: ${msg.item.barcode}`;
       } else {
@@ -47,7 +50,7 @@ export class SaleButtonsComponent implements OnDestroy {
   }
 
   onMoreClicked(): void {
-    this.router.navigate(["/item/1"]);
+    this.router.navigate([`/item/${this.item.id}`]);
   }
 
   onCompleted(): void {
