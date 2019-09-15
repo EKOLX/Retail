@@ -20,11 +20,13 @@ import { HighlightDirective } from "./directives/highlight.directive";
 import { CommunicationService } from "./services/communication.service";
 import { SignInComponent } from "./sign-in/sign-in.component";
 import { HomeComponent } from "./main/home.component";
+import { ItemComponent } from "./item/item.component";
 
 const appRoutes: Routes = [
   { path: "", component: HomeComponent },
   { path: "home", component: HomeComponent },
-  { path: "sign-in", component: SignInComponent }
+  { path: "sign-in", component: SignInComponent },
+  { path: "item/:id", component: ItemComponent }
 ];
 
 @NgModule({
@@ -39,7 +41,8 @@ const appRoutes: Routes = [
     ConfirmationComponent,
     HighlightDirective,
     SignInComponent,
-    HomeComponent
+    HomeComponent,
+    ItemComponent
   ],
   imports: [
     BrowserModule,

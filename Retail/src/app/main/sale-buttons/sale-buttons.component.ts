@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, EventEmitter } from "@angular/core";
+import { Component, OnDestroy } from "@angular/core";
+import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
-import { SaleService } from "src/app/services/sale.service";
 import { CommunicationService } from "src/app/services/communication.service";
 import { Message } from "src/app/models/message.model";
 import {
@@ -23,7 +23,10 @@ export class SaleButtonsComponent implements OnDestroy {
   modalDialog: ModalDialog;
   private subscription: Subscription;
 
-  constructor(private communicationService: CommunicationService) {
+  constructor(
+    private communicationService: CommunicationService,
+    private router: Router
+  ) {
     this.subscription = this.communicationService
       .getSaleInfo()
       .subscribe(msg => {
@@ -41,6 +44,10 @@ export class SaleButtonsComponent implements OnDestroy {
     });
 
     this.modalDialog = new ModalDialog();
+  }
+
+  onMoreClicked(): void {
+    this.router.navigate(["/item/1"]);
   }
 
   onCompleted(): void {
