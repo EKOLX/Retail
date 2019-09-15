@@ -23,10 +23,7 @@ export class SaleButtonsComponent implements OnDestroy {
   modalDialog: ModalDialog;
   private subscription: Subscription;
 
-  constructor(
-    private communicationService: CommunicationService,
-    private saleService: SaleService
-  ) {
+  constructor(private communicationService: CommunicationService) {
     this.subscription = this.communicationService
       .getSaleInfo()
       .subscribe(msg => {

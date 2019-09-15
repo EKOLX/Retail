@@ -1,12 +1,13 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
+import { Routes, RouterModule } from "@angular/router";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AngularFontAwesomeModule } from "angular-font-awesome";
 
 import { AppComponent } from "./app.component";
-import { HeaderComponent } from "./header/header.component";
+import { HeaderComponent } from "./main/header/header.component";
 import { SaleItemsComponent } from "./main/sale-items/sale-items.component";
 import { SaleButtonsComponent } from "./main/sale-buttons/sale-buttons.component";
 import { SaleListComponent } from "./main/sale-list/sale-list.component";
@@ -17,6 +18,14 @@ import { ConfirmationComponent } from "./dialog-box/confirmation/confirmation.co
 import { HighlightDirective } from "./directives/highlight.directive";
 
 import { CommunicationService } from "./services/communication.service";
+import { SignInComponent } from "./sign-in/sign-in.component";
+import { HomeComponent } from "./main/home.component";
+
+const appRoutes: Routes = [
+  { path: "", component: HomeComponent },
+  { path: "home", component: HomeComponent },
+  { path: "sign-in", component: SignInComponent }
+];
 
 @NgModule({
   declarations: [
@@ -28,12 +37,15 @@ import { CommunicationService } from "./services/communication.service";
     SaleItemComponent,
     ModalWindowComponent,
     ConfirmationComponent,
-    HighlightDirective
+    HighlightDirective,
+    SignInComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    RouterModule.forRoot(appRoutes),
     AngularFontAwesomeModule
   ],
   providers: [CommunicationService],

@@ -2,12 +2,10 @@ import {
   Component,
   OnChanges,
   SimpleChanges,
-  OnDestroy,
   Input,
   Output,
   EventEmitter
 } from "@angular/core";
-import { Subscription } from "rxjs";
 import { CommunicationService } from "src/app/services/communication.service";
 import { SaleService } from "src/app/services/sale.service";
 import { Status, ModalDialog, ModalButton } from "src/app/models/state.model";
@@ -19,14 +17,13 @@ import { Sale } from "src/app/models/sale.model";
   templateUrl: "./sale-list.component.html",
   styleUrls: ["./sale-list.component.sass"]
 })
-export class SaleListComponent implements OnChanges, OnDestroy {
+export class SaleListComponent implements OnChanges {
   @Input() modalDialog: ModalDialog;
   @Output() restoreClicked = new EventEmitter();
 
   sales: Array<Sale> = [];
   button1: ModalButton;
   private _selectedSaleId: number = 0;
-  private subscription: Subscription;
 
   constructor(
     private communicationService: CommunicationService,
@@ -70,9 +67,5 @@ export class SaleListComponent implements OnChanges, OnDestroy {
 
   getSaleClass(id: number): string {
     return this.selectedSaleId == id ? "table-info" : "";
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 }
