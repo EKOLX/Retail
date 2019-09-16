@@ -10,6 +10,7 @@ import { ItemService } from "../services/item.service";
 })
 export class ItemComponent implements OnInit {
   item: Item;
+  saleId: string;
 
   constructor(
     private itemService: ItemService,
@@ -19,5 +20,8 @@ export class ItemComponent implements OnInit {
   ngOnInit() {
     const itemId: number = this.route.snapshot.params["id"];
     this.item = this.itemService.getItemById(itemId);
+    this.route.queryParams.subscribe(data => {
+      this.saleId = data.saleId;
+    });
   }
 }
