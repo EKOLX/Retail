@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { Item } from "../models/sale.model";
+import { ItemService } from "../services/item.service";
 
 @Component({
   selector: "app-item",
@@ -7,10 +9,15 @@ import { ActivatedRoute } from "@angular/router";
   styleUrls: ["./item.component.sass"]
 })
 export class ItemComponent implements OnInit {
-  itemId: number;
-  constructor(private route: ActivatedRoute) {}
+  item: Item;
+
+  constructor(
+    private itemService: ItemService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.itemId = this.route.snapshot.params["id"];
+    const itemId: number = this.route.snapshot.params["id"];
+    this.item = this.itemService.getItemById(itemId);
   }
 }

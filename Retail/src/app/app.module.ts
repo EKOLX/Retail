@@ -1,6 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { Routes, RouterModule } from "@angular/router";
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -23,7 +23,7 @@ import { HomeComponent } from "./main/home.component";
 import { ItemComponent } from "./item/item.component";
 
 const appRoutes: Routes = [
-  { path: "", component: HomeComponent },
+  { path: "", component: SignInComponent },
   { path: "home", component: HomeComponent },
   { path: "sign-in", component: SignInComponent },
   { path: "item/:id", component: ItemComponent }
@@ -48,6 +48,7 @@ const appRoutes: Routes = [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
     AngularFontAwesomeModule
   ],
