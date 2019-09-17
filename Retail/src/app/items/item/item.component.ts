@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { Item } from "../models/sale.model";
-import { ItemService } from "../services/item.service";
+import { Item } from "../../models/sale.model";
+import { ItemService } from "../../services/item.service";
 
 @Component({
   selector: "app-item",
@@ -18,8 +18,11 @@ export class ItemComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const itemId: number = this.route.snapshot.params["id"];
-    this.item = this.itemService.getItemById(itemId);
+    // const itemId: number = this.route.snapshot.params["id"];
+    this.route.params.subscribe(data => {
+      const itemId = data.id;
+      this.item = this.itemService.getItemById(itemId);
+    });
     this.route.queryParams.subscribe(data => {
       this.saleId = data.saleId;
     });

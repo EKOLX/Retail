@@ -1,0 +1,12 @@
+<div class="row align-items-center">
+  <div class="col-sm-4">
+    <img src="{{ item.imageUrl }}" onerror="this.src='./assets/empty.png'" alt="Select an item to see image"
+      class="rounded img-responsive w-100 h-100" />
+  </div>
+  <div class="col-sm-8 text-primary">
+    <h4>{{ item.name }}</h4>
+    <h5>Price: {{ item.price }}$</h5>
+    <h6>Barcode: {{ item.barcode }}</h6>
+    <h6>Current sale № {{ saleId }}</h6>
+  </div>
+</div>

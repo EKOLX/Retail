@@ -50,7 +50,7 @@ export class SaleButtonsComponent implements OnDestroy {
   }
 
   onMoreClicked(): void {
-    this.router.navigate(["/item/", this.item.id], {
+    this.router.navigate(["/items", this.item.id], {
       queryParams: { saleId: this.billNumber },
       fragment: "active"
     });
