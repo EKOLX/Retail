@@ -58,7 +58,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
           return;
         } else {
           this.saveSale();
-          this.sale = this.saleService.removeSavedSaleById(msg.saleId);
+          this.sale = this.saleService.moveSavedSaleToCurrent(msg.saleId);
           this.updateTotalAmounts();
           this.communicationService.sendSaleInfo(
             new Message(null, this.sale.id)
@@ -69,7 +69,8 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loadSales();
+    this.sale = this.saleService.getSale();
+    this.updateTotalAmounts();
 
     this.communicationService.sendSaleInfo(new Message(null, this.sale.id));
   }
@@ -104,11 +105,6 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
       this.communicationService.clearItem();
     }
 
-    this.updateTotalAmounts();
-  }
-
-  private loadSales(): void {
-    this.sale = this.saleService.getMockSale();
     this.updateTotalAmounts();
   }
 

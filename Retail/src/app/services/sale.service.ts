@@ -8,12 +8,53 @@ import { ItemService } from "./item.service";
 })
 export class SaleService {
   // Mock data. Will be moved to Node.js
-  private sales: Sale[] = [];
+  private currentSale: Sale;
+  private completedSales: Sale[] = [];
   private savedSales: Sale[] = [];
 
-  constructor(private itemService: ItemService) {}
+  constructor(private itemService: ItemService) {
+    this.currentSale = this.getMockSale();
+  }
 
-  getMockSale(): Sale {
+  getSale(): Sale {
+    return this.currentSale;
+  }
+
+  moveSavedSaleToCurrent(saleId: number): Sale {
+    this.currentSale = this.savedSales.find(s => s.id == saleId);
+    const index = this.savedSales.indexOf(this.currentSale);
+    this.savedSales.splice(index, 1);
+    return this.currentSale;
+  }
+
+  getSalesByStatus(status: Status): Array<Sale> {
+    if (status == Status.isSaved) return this.savedSales;
+    else if (status == Status.isCompleted) return this.completedSales;
+    else return null;
+  }
+
+  saveSale(sale: Sale): Sale {
+    this.savedSales.push(sale);
+    return this.createNewSale();
+  }
+
+  completeSale(sale: Sale): Sale {
+    this.completedSales.push(sale);
+    return this.createNewSale();
+  }
+
+  private createNewSale(): Sale {
+    const newSale: Sale = new Sale(
+      this.completedSales.length + this.savedSales.length + 1,
+      new Date()
+    );
+    newSale.saleDetails = [];
+    this.currentSale = newSale;
+    return this.currentSale;
+  }
+
+  // TODO: will be removed
+  private getMockSale(): Sale {
     const sale: Sale = new Sale(1, new Date());
     const saleDetails: SaleDetail[] = [];
     sale.saleDetails = saleDetails;
@@ -43,36 +84,5 @@ export class SaleService {
     saleDetails.push(saleDetail6);
 
     return sale;
-  }
-
-  removeSavedSaleById(id: number): Sale {
-    const sale = this.savedSales.find(s => s.id == id);
-    const index = this.savedSales.indexOf(sale);
-    this.savedSales.splice(index, 1);
-    return sale;
-  }
-
-  getSalesByStatus(status: Status = Status.isCompleted): Array<Sale> {
-    if (status == Status.isSaved) return this.savedSales;
-    else return this.sales;
-  }
-
-  saveSale(sale: Sale): Sale {
-    this.savedSales.push(sale);
-    return this.createNewSale();
-  }
-
-  completeSale(sale: Sale): Sale {
-    this.sales.push(sale);
-    return this.createNewSale();
-  }
-
-  private createNewSale(): Sale {
-    const newSale: Sale = new Sale(
-      this.sales.length + this.savedSales.length + 1,
-      new Date()
-    );
-    newSale.saleDetails = [];
-    return newSale;
   }
 }

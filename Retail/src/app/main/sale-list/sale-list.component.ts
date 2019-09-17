@@ -52,7 +52,7 @@ export class SaleListComponent implements OnChanges {
       });
     }
     if (modalDialogInst.type == "CompletedList")
-      this.sales = this.saleService.getSalesByStatus();
+      this.sales = this.saleService.getSalesByStatus(Status.isCompleted);
     else if (modalDialogInst.type == "IncompletedList")
       this.sales = this.saleService.getSalesByStatus(Status.isSaved);
   }
