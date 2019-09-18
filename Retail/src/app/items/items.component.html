@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="row mt-3">
         <div class="col-md-4">
-            <a routerLink="/home" class="btn btn-success w-25 mb-3">Back</a>
+            <a href="javascript:window.close();" class="btn btn-success w-25 mb-3">Close</a>
             <div>
                 <ul *ngFor="let item of items" class="list-group">
                     <li class="list-group-item list-group-item-action" [routerLink]="[item.id]"

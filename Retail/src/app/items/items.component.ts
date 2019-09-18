@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { Item } from "../models/sale.model";
+import { Helper } from "../helpers/helper";
 import { ItemService } from "../services/item.service";
 
 @Component({
@@ -7,14 +8,15 @@ import { ItemService } from "../services/item.service";
   templateUrl: "./items.component.html",
   styleUrls: ["./items.component.sass"]
 })
-export class ItemsComponent implements OnInit {
+export class ItemsComponent {
   items: Array<Item>;
-  // TODO: Implement functionality which shows remainder of items
-  remainder: number = 8;
 
-  constructor(private itemService: ItemService) {
+  constructor(itemService: ItemService) {
     this.items = itemService.getItems();
   }
 
-  ngOnInit() {}
+  get remainder(): number {
+    // TODO: Implement functionality which shows remainder of items
+    return Helper.getRandomIntInclusive(1, 10);
+  }
 }

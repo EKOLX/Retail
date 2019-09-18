@@ -3,7 +3,7 @@
     <div class="col-sm-6 mx-auto">
       <h3 class="text-center">You are logged out</h3>
       <br />
-      <form [formGroup]="userCredential" (ngSubmit)="onSubmit(userCredential.value)">
+      <form [formGroup]="userCredential" (ngSubmit)="onLogin(userCredential.value)">
         <div class="form-group row">
           <label for="tbUser" class="col-sm-3 col-form-label">User Name</label>
           <div class="col-sm-9">

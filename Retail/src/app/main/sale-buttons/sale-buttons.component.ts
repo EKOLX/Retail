@@ -50,12 +50,11 @@ export class SaleButtonsComponent implements OnDestroy {
   }
 
   onMoreClicked(): void {
-    this.router.navigate(["/items", this.item.id], {
+    const url = this.router.createUrlTree(["/items", this.item.id], {
       queryParams: { saleId: this.billNumber },
       fragment: "active"
     });
-    //const url = this.router.createUrlTree([`/item/${this.item.id}`]);
-    //window.open(url.toString(), "_blank");
+    window.open(url.toString(), "_blank");
   }
 
   onCompleted(): void {
