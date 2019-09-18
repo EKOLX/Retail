@@ -22,7 +22,8 @@ import { SignInComponent } from "./sign-in/sign-in.component";
 import { HighlightDirective } from "./directives/highlight.directive";
 
 import { CommunicationService } from "./services/communication.service";
-import { AuthGuard } from "./services/auth-guard.service";
+import { AuthGuard } from "./guards/auth.guard";
+import { LockOutGuard } from "./guards/lock-out.guard";
 
 @NgModule({
   declarations: [
@@ -47,7 +48,7 @@ import { AuthGuard } from "./services/auth-guard.service";
     ReactiveFormsModule,
     AngularFontAwesomeModule
   ],
-  providers: [CommunicationService, AuthGuard],
+  providers: [CommunicationService, AuthGuard, LockOutGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -14,7 +14,7 @@ export class AppComponent {
       if (saleService.getSale().saleDetails.length == 0)
         if (router.url !== "/sign-in") {
           router.navigate(["/sign-in"]);
-          console.log(
+          console.warn(
             "Due to inactivity application was automatically locked out."
           );
         }

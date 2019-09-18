@@ -24,11 +24,12 @@ export class HeaderComponent implements OnInit {
   }
 
   onLock(): void {
-    if (this.saleService.getSale().saleDetails.length > 0)
-      alert(
-        "Current sale is not empty. Before locking, the sale have to be saved or completed."
-      );
-    else this.router.navigate(["/sign-in"]);
+    // if (this.saleService.getSale().saleDetails.length > 0)
+    //   alert(
+    //     "Current sale is not empty. Before locking, the sale have to be saved or completed."
+    //   );
+    // else
+    this.router.navigate(["/sign-in"]);
   }
 
   private updateDateTime(): void {
