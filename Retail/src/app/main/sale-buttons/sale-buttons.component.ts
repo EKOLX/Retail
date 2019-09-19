@@ -54,7 +54,7 @@ export class SaleButtonsComponent implements OnDestroy {
       queryParams: { saleId: this.billNumber },
       fragment: "active"
     });
-    window.open(url.toString(), "_blank");
+    window.open(`#${url.toString()}`, "_blank");
   }
 
   onCompleted(): void {
