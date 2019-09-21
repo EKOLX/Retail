@@ -1,7 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators
+} from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "../services/auth.service";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-sign-in",
@@ -9,31 +15,62 @@ import { AuthService } from "../services/auth.service";
   styleUrls: ["./sign-in.component.sass"]
 })
 export class SignInComponent implements OnInit {
-  userCredential: FormGroup;
+  signInForm: FormGroup;
+  userName: FormControl;
+  formIsValidated: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService
-  ) {
-    // TODO: use localStorage
-    this.userCredential = this.formBuilder.group({
-      name: "",
-      password: ""
+  ) {}
+
+  ngOnInit() {
+    this.userName = new FormControl(
+      null,
+      [Validators.required],
+      this.nonExistingName.bind(this)
+    );
+
+    this.signInForm = this.formBuilder.group({
+      userName: this.userName,
+      password: new FormControl(null, Validators.required)
+    });
+
+    this.signInForm.statusChanges.subscribe(value => {
+      if (value === "VALID") this.formIsValidated = true;
+      else this.formIsValidated = false;
+    });
+
+    // TODO: Get value from localStorage
+    this.signInForm.patchValue({
+      userName: "Elkhan"
     });
   }
 
-  ngOnInit() {}
-
-  onLogin(credentials: any): void {
-    // TODO: check credentials and forward to home page if it's ok
-    if (credentials.name && credentials.password) {
-      this.userCredential.reset();
+  onLogin(): void {
+    if (this.signInForm.valid) {
+      this.signInForm.reset();
       this.authService.logIn();
       this.router.navigate(["/home"], { relativeTo: this.route });
     } else {
       alert("Please, specify credentials");
     }
+  }
+
+  private nonExistingName(
+    control: FormControl
+  ): Promise<any> | Observable<any> {
+    const promise = new Promise<any>((resolve, reject) => {
+      setTimeout(() => {
+        if (control.value.toLowerCase() === "test") {
+          resolve({ nameDoesNotExist: true });
+        } else {
+          resolve(null);
+        }
+      }, 1500);
+    });
+    return promise;
   }
 }

@@ -1,26 +1,61 @@
-<div class="container-fluid h-100" style="background-color: #2d39eb; color: white">
+<div
+  class="container-fluid h-100"
+  style="background-color: #2d39eb; color: white"
+>
   <div class="row align-items-center h-100">
     <div class="col-sm-6 mx-auto">
       <h3 class="text-center">You are logged out</h3>
       <br />
-      <form [formGroup]="userCredential" (ngSubmit)="onLogin(userCredential.value)" #f="ngForm">
+      <form [formGroup]="signInForm" (ngSubmit)="onLogin()">
         <div class="form-group row">
           <label for="tbUser" class="col-sm-3 col-form-label">User Name</label>
           <div class="col-sm-9">
-            <input id="tbUser" type="text" formControlName="name" class="form-control" required />
-            <span class="help-block">Please, enter a valid user name</span>
+            <input
+              id="tbUser"
+              type="text"
+              [formControl]="userName"
+              class="form-control"
+            />
+            <span
+              *ngIf="
+                signInForm.get('userName').invalid &&
+                signInForm.get('userName').touched
+              "
+            >
+              <span
+                *ngIf="signInForm.get('userName').errors['required']"
+                class="help-block text-warning"
+                >User name is required</span
+              >
+              <span
+                *ngIf="signInForm.get('userName').errors['nameDoesNotExist']"
+                class="help-block text-warning"
+                >User with this does not exist</span
+              >
+            </span>
           </div>
         </div>
         <div class="form-group row">
-          <label for="tbPassword" class="col-sm-3 col-form-label">Password</label>
+          <label for="tbPassword" class="col-sm-3 col-form-label"
+            >Password</label
+          >
           <div class="col-sm-9">
-            <input id="tbPassword" type="password" formControlName="password" placeholder="Password"
-              class="form-control" required />
+            <input
+              id="tbPassword"
+              type="password"
+              formControlName="password"
+              placeholder="Password"
+              class="form-control"
+            />
           </div>
         </div>
         <div class="form-group row">
-          <div class="col-sm-3 offset-sm-9">
-            <button type="submit" class="btn btn-success w-100" [disabled]="!f.valid">
+          <div class="col-sm-4 offset-sm-8">
+            <button
+              type="submit"
+              class="btn btn-success w-100"
+              [disabled]="!formIsValidated"
+            >
               Sign in
             </button>
           </div>
