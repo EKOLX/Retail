@@ -23,28 +23,31 @@ export class SaleButtonsComponent implements OnDestroy {
   itemImageUrl: string;
   itemDisplayName: string;
   modalDialog: ModalDialog;
-  private subscription: Subscription;
+  private saleInfoSubscription: Subscription;
+  private itemSubscription: Subscription;
 
   constructor(
     private communicationService: CommunicationService,
     private router: Router
   ) {
-    this.subscription = this.communicationService
-      .getSaleInfo()
-      .subscribe(msg => {
-        if (msg) this.billNumber = msg.saleId;
-      });
-    this.communicationService.getItem().subscribe(msg => {
-      if (msg) {
-        this.item = msg.item;
-        this.itemImageUrl = msg.item.imageUrl;
-        this.itemDisplayName = `${msg.item.name} - barcode: ${msg.item.barcode}`;
-      } else {
-        // Clear image source if empty image is sent
-        this.itemImageUrl = null;
-        this.itemDisplayName = null;
+    this.saleInfoSubscription = this.communicationService.saleInfoChanged.subscribe(
+      msg => {
+        this.billNumber = msg.saleId;
       }
-    });
+    );
+    this.itemSubscription = this.communicationService
+      .getItem()
+      .subscribe(msg => {
+        if (msg) {
+          this.item = msg.item;
+          this.itemImageUrl = msg.item.imageUrl;
+          this.itemDisplayName = `${msg.item.name} - barcode: ${msg.item.barcode}`;
+        } else {
+          // Clear image source if empty image is sent
+          this.itemImageUrl = null;
+          this.itemDisplayName = null;
+        }
+      });
 
     this.modalDialog = new ModalDialog();
   }
@@ -128,6 +131,7 @@ export class SaleButtonsComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.saleInfoSubscription.unsubscribe();
+    this.itemSubscription.unsubscribe();
   }
 }

@@ -1,28 +1,19 @@
-import { Injectable } from "@angular/core";
 import { Subject, Observable } from "rxjs";
 import { Message } from "../models/message.model";
 
 export class CommunicationService {
-  private saleSubject = new Subject<Message>();
-  private saleInfoSubject = new Subject<Message>();
+  saleChanged = new Subject<Message>();
+  saleInfoChanged = new Subject<Message>();
   private itemSubject = new Subject<Message>();
   private statusSubject = new Subject<Message>();
   private modalSubject = new Subject<Message>();
 
   sendSale(message: Message): void {
-    this.saleSubject.next(message);
-  }
-
-  getSale(): Observable<Message> {
-    return this.saleSubject.asObservable();
+    this.saleChanged.next(message);
   }
 
   sendSaleInfo(message: Message): void {
-    this.saleInfoSubject.next(message);
-  }
-
-  getSaleInfo(): Observable<Message> {
-    return this.saleInfoSubject.asObservable();
+    this.saleInfoChanged.next(message);
   }
 
   sendSaleStatus(message: Message): void {

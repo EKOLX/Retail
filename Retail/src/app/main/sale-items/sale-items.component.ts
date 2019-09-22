@@ -51,8 +51,8 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
           }
         }
       });
-    this.communicationService.getSale().subscribe(msg => {
-      if (msg) {
+    this.communicationService.saleChanged.subscribe(msg => {
+      if (msg.status == Status.isRestored) {
         if (this.sale.saleDetails.length > 0) {
           alert("Current sale is not empty.");
           return;

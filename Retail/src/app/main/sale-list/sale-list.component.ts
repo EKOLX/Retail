@@ -47,7 +47,7 @@ export class SaleListComponent implements OnChanges {
       this.button1.clicked.subscribe(() => {
         if (modalDialogInst.type == "IncompletedList")
           this.communicationService.sendSale(
-            new Message(Status.isSaved, this.selectedSaleId)
+            new Message(Status.isRestored, this.selectedSaleId)
           );
       });
     }

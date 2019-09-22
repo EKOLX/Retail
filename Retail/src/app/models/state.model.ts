@@ -1,10 +1,11 @@
 import { EventEmitter } from "@angular/core";
 
 export enum Status {
-  isNew = 0,
-  isSaved = 1,
-  isRemoved = 2,
-  isCompleted = 3
+  isNew,
+  isSaved,
+  isRemoved,
+  isCompleted,
+  isRestored
 }
 
 export enum ModalSize {
