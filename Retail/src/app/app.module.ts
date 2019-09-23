@@ -27,6 +27,7 @@ import { AuthGuard } from "./guards/auth.guard";
 import { LockOutGuard } from "./guards/lock-out.guard";
 
 import { ShortenPipe } from "./helpers/shorten.pipe";
+import { FilterPipe } from './helpers/filter.pipe';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { ShortenPipe } from "./helpers/shorten.pipe";
     ConfirmationComponent,
     SignInComponent,
     HighlightDirective,
-    ShortenPipe
+    ShortenPipe,
+    FilterPipe
   ],
   imports: [
     BrowserModule,

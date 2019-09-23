@@ -10,10 +10,15 @@ import { ItemService } from "../services/item.service";
 })
 export class ItemsComponent {
   items: Array<Item>;
+  filteredItem: string = "";
   remainder: number;
 
   constructor(itemService: ItemService) {
     this.items = itemService.getItems();
     this.remainder = Helper.getRandomIntInclusive(1, 10);
+  }
+
+  clearFilter(): void {
+    this.filteredItem = "";
   }
 }
