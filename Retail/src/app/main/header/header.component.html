@@ -9,7 +9,7 @@
     </h3>
   </div>
   <div class="col-md-3 p-3 text-light">
-    <span class="bg-info mr-2 p-2">{{ currentDateTime }}</span>
+    <span class="bg-info mr-2 p-2">{{ currentDateTime | date: 'dd MMM yyyy mm:ss' }}</span>
     <a class="btn btn-success" (click)="onLock()"
       ><i class="fa fa-unlock-alt"></i
     ></a>

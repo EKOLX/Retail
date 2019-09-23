@@ -10,7 +10,7 @@ import { SaleService } from "src/app/services/sale.service";
 })
 export class HeaderComponent implements OnInit {
   userFullName: string;
-  currentDateTime: string;
+  currentDateTime: Date;
   title: string = "Retail";
 
   constructor(private saleService: SaleService, private router: Router) {
@@ -29,6 +29,6 @@ export class HeaderComponent implements OnInit {
 
   private updateDateTime(): void {
     const date: Date = new Date();
-    this.currentDateTime = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+    this.currentDateTime = date; // `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   }
 }

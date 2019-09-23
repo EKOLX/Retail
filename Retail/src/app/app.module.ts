@@ -22,8 +22,11 @@ import { SignInComponent } from "./sign-in/sign-in.component";
 import { HighlightDirective } from "./directives/highlight.directive";
 
 import { CommunicationService } from "./services/communication.service";
+
 import { AuthGuard } from "./guards/auth.guard";
 import { LockOutGuard } from "./guards/lock-out.guard";
+
+import { ShortenPipe } from "./helpers/shorten.pipe";
 
 @NgModule({
   declarations: [
@@ -39,7 +42,8 @@ import { LockOutGuard } from "./guards/lock-out.guard";
     ModalWindowComponent,
     ConfirmationComponent,
     SignInComponent,
-    HighlightDirective
+    HighlightDirective,
+    ShortenPipe
   ],
   imports: [
     BrowserModule,

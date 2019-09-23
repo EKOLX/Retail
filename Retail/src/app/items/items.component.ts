@@ -10,13 +10,10 @@ import { ItemService } from "../services/item.service";
 })
 export class ItemsComponent {
   items: Array<Item>;
+  remainder: number;
 
   constructor(itemService: ItemService) {
     this.items = itemService.getItems();
-  }
-
-  get remainder(): number {
-    // TODO: Implement functionality which shows remainder of items
-    return Helper.getRandomIntInclusive(1, 10);
+    this.remainder = Helper.getRandomIntInclusive(1, 10);
   }
 }
