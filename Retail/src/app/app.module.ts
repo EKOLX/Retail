@@ -1,6 +1,7 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { HttpClientModule } from "@angular/common/http";
 
 import { AppRoutingModule } from "./app-routing.module";
 
@@ -27,7 +28,7 @@ import { AuthGuard } from "./guards/auth.guard";
 import { LockOutGuard } from "./guards/lock-out.guard";
 
 import { ShortenPipe } from "./helpers/shorten.pipe";
-import { FilterPipe } from './helpers/filter.pipe';
+import { FilterPipe } from "./helpers/filter.pipe";
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { FilterPipe } from './helpers/filter.pipe';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    AngularFontAwesomeModule
+    AngularFontAwesomeModule,
+    HttpClientModule
   ],
   providers: [CommunicationService, AuthGuard, LockOutGuard],
   bootstrap: [AppComponent]
