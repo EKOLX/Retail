@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { Item } from "../models/sale.model";
-import { Helper } from "../helpers/helper";
+import { MathHelper } from "../helpers/mathHelper";
 import { ItemService } from "../services/item.service";
 
 @Component({
@@ -15,7 +15,7 @@ export class ItemsComponent {
 
   constructor(itemService: ItemService) {
     this.items = itemService.getItems();
-    this.remainder = Helper.getRandomIntInclusive(1, 10);
+    this.remainder = MathHelper.getRandomIntInclusive(1, 10);
   }
 
   clearFilter(): void {

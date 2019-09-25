@@ -27,8 +27,8 @@ import { CommunicationService } from "./services/communication.service";
 import { AuthGuard } from "./guards/auth.guard";
 import { LockOutGuard } from "./guards/lock-out.guard";
 
-import { ShortenPipe } from "./helpers/shorten.pipe";
-import { FilterPipe } from "./helpers/filter.pipe";
+import { ShortenPipe } from "./helpers/pipes/shorten.pipe";
+import { FilterPipe } from "./helpers/pipes/filter.pipe";
 
 @NgModule({
   declarations: [

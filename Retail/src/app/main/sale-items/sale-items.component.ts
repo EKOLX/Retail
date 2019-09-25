@@ -6,7 +6,7 @@ import {
   ElementRef
 } from "@angular/core";
 import { Subscription } from "rxjs";
-import { Sale, SaleDetail, Item } from "src/app/models/sale.model";
+import { Sale, SaleDetail } from "src/app/models/sale.model";
 import { Message } from "src/app/models/message.model";
 import { Status } from "src/app/models/state.model";
 import { ItemService } from "src/app/services/item.service";
@@ -26,6 +26,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
   subTotal: number;
   totalDiscount: number;
   total: number;
+
   private subscription: Subscription;
 
   @ViewChild("itemBarcode", { static: false }) itemBarcode: ElementRef;
@@ -74,15 +75,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const key: string = "sale";
-    let saleJson: string = sessionStorage.getItem(key);
-    if (!saleJson) {
-      this.sale = this.saleService.getSale();
-      saleJson = JSON.stringify(this.sale);
-      sessionStorage.clear();
-      sessionStorage.setItem(key, saleJson);
-    } else this.sale = JSON.parse(saleJson);
-
+    this.sale = this.saleService.getSale();
     this.updateTotalAmounts();
 
     this.communicationService.sendSaleInfo(new Message(null, this.sale.id));
@@ -96,12 +89,13 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
     let item = this.itemService.getItemByBarcode(barcode);
 
     if (!item) {
-      const itemCount = this.itemService.getItems().length;
-      item = this.itemService.createNewItem(itemCount);
+      alert(
+        `Item with the barcode ${barcode} doesn't exist. You can find valid barcode (e.g. 1234567890) on the item list.`
+      );
+      return;
     }
 
-    const newSaleDetail = new SaleDetail(item.id, item.price, 1, 0);
-    this.sale.saleDetails.push(newSaleDetail);
+    this.saleService.addItemToSale(item);
 
     this.itemCode = "";
     this.updateTotalAmounts();

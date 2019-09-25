@@ -1,22 +1,39 @@
 import { Injectable } from "@angular/core";
-import { Sale, SaleDetail } from "../models/sale.model";
+import { Sale, SaleDetail, Item } from "../models/sale.model";
 import { Status } from "../models/state.model";
+import { LocalStorageHelper } from "../helpers/localStorageHelper";
 import { ItemService } from "./item.service";
+import { Subject } from "rxjs";
 
 @Injectable({
   providedIn: "root"
 })
 export class SaleService {
+  saleChanged: Subject<Sale> = new Subject<Sale>();
+
   private currentSale: Sale;
   private completedSales: Sale[] = [];
   private savedSales: Sale[] = [];
+  private saleKey: string = "sale";
 
   constructor(private itemService: ItemService) {
     this.currentSale = this.getMockSale();
   }
 
   getSale(): Sale {
+    if (LocalStorageHelper.checkDataByKey(this.saleKey)) {
+      const localSale = LocalStorageHelper.getDataByKey(this.saleKey) as Sale;
+      // Implement data retrieving
+    } else {
+      LocalStorageHelper.setDataByKey(this.saleKey, this.currentSale);
+    }
+
     return this.currentSale;
+  }
+
+  addItemToSale(item: Item) {
+    const newSaleDetail = new SaleDetail(item.id, item.price, 1, 0);
+    this.currentSale.saleDetails.push(newSaleDetail);
   }
 
   moveSavedSaleToCurrent(saleId: number): Sale {

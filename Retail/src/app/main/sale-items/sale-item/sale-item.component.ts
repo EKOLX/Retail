@@ -12,6 +12,7 @@ import { ItemService } from "src/app/services/item.service";
 export class SaleItemComponent implements OnInit {
   @Input() saleDetail: SaleDetail;
   @Output() amountChanged = new EventEmitter<boolean>();
+
   private item: Item;
 
   constructor(

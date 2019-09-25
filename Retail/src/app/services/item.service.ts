@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Item } from "../models/sale.model";
-import { Helper } from "../helpers/helper";
+import { MathHelper } from "../helpers/mathHelper";
 
 @Injectable({
   providedIn: "root"
@@ -22,18 +22,6 @@ export class ItemService {
 
   getItemByBarcode(barcode: number): Item {
     return this.items.find(it => it.barcode == barcode);
-  }
-
-  createNewItem(itemCount: number): Item {
-    const newItem = new Item(
-      itemCount + 1,
-      `New Product ${itemCount + 1}`,
-      Helper.getRandomIntInclusive(10, 100),
-      1234567890 + itemCount + 1,
-      `./assets/new_product${Helper.getRandomIntInclusive(1, 2)}.jpg`
-    );
-    this.addItem(newItem);
-    return newItem;
   }
 
   private addItem(item: Item): boolean {

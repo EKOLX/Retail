@@ -1,4 +1,4 @@
-export class Helper {
+export class MathHelper {
   static getRandomIntInclusive(min: number, max: number): number {
     min = Math.ceil(min);
     max = Math.floor(max);
