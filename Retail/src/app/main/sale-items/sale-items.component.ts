@@ -81,8 +81,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
       saleJson = JSON.stringify(this.sale);
       sessionStorage.clear();
       sessionStorage.setItem(key, saleJson);
-    }
-    //else this.sale = JSON.parse(saleJson);
+    } else this.sale = JSON.parse(saleJson);
 
     this.updateTotalAmounts();
 
