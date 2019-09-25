@@ -1,5 +1,5 @@
 export class Sale {
-  constructor(public id: number, public date: Date) {}
+  constructor(public id: number, public date: Date = new Date()) {}
   saleDetails: Array<SaleDetail>;
 
   get totalAmount(): number {

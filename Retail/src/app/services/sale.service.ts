@@ -1,7 +1,4 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { catchError, map, tap } from "rxjs/operators";
-
 import { Sale, SaleDetail } from "../models/sale.model";
 import { Status } from "../models/state.model";
 import { ItemService } from "./item.service";
@@ -10,14 +7,12 @@ import { ItemService } from "./item.service";
   providedIn: "root"
 })
 export class SaleService {
-  // Mock data. Will be moved to Node.js
   private currentSale: Sale;
   private completedSales: Sale[] = [];
   private savedSales: Sale[] = [];
 
-  constructor(private http: HttpClient, private itemService: ItemService) {
+  constructor(private itemService: ItemService) {
     this.currentSale = this.getMockSale();
-    // TODO: Implement http
   }
 
   getSale(): Sale {

@@ -11,6 +11,7 @@ import { Message } from "src/app/models/message.model";
 import { Status } from "src/app/models/state.model";
 import { ItemService } from "src/app/services/item.service";
 import { SaleService } from "src/app/services/sale.service";
+import { RestService } from "src/app/services/rest.service";
 import { CommunicationService } from "src/app/services/communication.service";
 
 @Component({
@@ -32,11 +33,11 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
   constructor(
     private saleService: SaleService,
     private itemService: ItemService,
+    private rest: RestService,
     private communicationService: CommunicationService
   ) {
-    this.subscription = this.communicationService
-      .getSaleStatus()
-      .subscribe(msg => {
+    this.subscription = this.communicationService.saleStatusChanged.subscribe(
+      msg => {
         if (msg) {
           switch (msg.status) {
             case Status.isCompleted:
@@ -50,7 +51,8 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
               break;
           }
         }
-      });
+      }
+    );
     this.communicationService.saleChanged.subscribe(msg => {
       if (msg.status == Status.isRestored) {
         if (this.sale.saleDetails.length > 0) {
@@ -66,10 +68,22 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
         }
       }
     });
+
+    this.sale = new Sale(1);
+    this.sale.saleDetails = [];
   }
 
   ngOnInit() {
-    this.sale = this.saleService.getSale();
+    const key: string = "sale";
+    let saleJson: string = sessionStorage.getItem(key);
+    if (!saleJson) {
+      this.sale = this.saleService.getSale();
+      saleJson = JSON.stringify(this.sale);
+      sessionStorage.clear();
+      sessionStorage.setItem(key, saleJson);
+    }
+    //else this.sale = JSON.parse(saleJson);
+
     this.updateTotalAmounts();
 
     this.communicationService.sendSaleInfo(new Message(null, this.sale.id));
@@ -121,9 +135,18 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
 
   private completeSale(): void {
     if (this.sale.saleDetails.length > 0) {
+      this.rest
+        .postSale(this.sale)
+        .subscribe(
+          (response: Response) => console.log(response),
+          (error: Response) => console.log(error)
+        );
+
       this.sale = this.saleService.completeSale(this.sale);
+
       this.communicationService.clearItem();
       this.communicationService.sendSaleInfo(new Message(null, this.sale.id));
+
       this.updateTotalAmounts();
     } else {
       // TODO: show error message or something else
