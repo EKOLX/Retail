@@ -11,7 +11,7 @@ import { ItemService } from "src/app/services/item.service";
 })
 export class SaleItemComponent implements OnInit {
   @Input() saleDetail: SaleDetail;
-  @Output() amountChanged = new EventEmitter<boolean>();
+  @Output() amountChanged = new EventEmitter();
 
   private item: Item;
 
@@ -45,17 +45,12 @@ export class SaleItemComponent implements OnInit {
     let message = new Message(null, null, this.item);
     this.communicationService.sendItem(message);
 
-    this.amountChanged.emit(false);
+    this.amountChanged.emit();
   }
 
   onRemoveItem(): void {
-    let isRemoved: boolean = false;
-    if (this.saleDetail.quantity > 1) {
-      this.saleDetail.quantity -= 1;
-    } else {
-      isRemoved = true;
-    }
+    if (this.saleDetail.quantity >= 1) this.saleDetail.quantity -= 1;
 
-    this.amountChanged.emit(isRemoved);
+    this.amountChanged.emit();
   }
 }

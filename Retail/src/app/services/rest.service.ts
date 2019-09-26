@@ -1,14 +1,13 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { catchError, map, tap } from "rxjs/operators";
-import { SaleService } from "./sale.service";
 import { Sale } from "../models/sale.model";
 
 @Injectable({
   providedIn: "root"
 })
 export class RestService {
-  constructor(private http: HttpClient, private saleService: SaleService) {}
+  constructor(private http: HttpClient) {}
 
   postSale(sale: Sale) {
     const header = new HttpHeaders({ "Content-Type": "application/json" });

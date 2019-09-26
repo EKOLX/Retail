@@ -11,7 +11,7 @@
     </div>
   </div>
   <app-sale-item *ngFor="let saleDetail of sale.saleDetails" [saleDetail]="saleDetail"
-    (amountChanged)="onAmountChanged($event, saleDetail)">
+    (amountChanged)="onAmountChanged(saleDetail)">
   </app-sale-item>
   <hr style="border: 1px solid green; border-radius: 2px;" />
   <div class="row">

@@ -3,27 +3,37 @@ import { Sale, SaleDetail, Item } from "../models/sale.model";
 import { Status } from "../models/state.model";
 import { LocalStorageHelper } from "../helpers/localStorageHelper";
 import { ItemService } from "./item.service";
-import { Subject } from "rxjs";
+import { RestService } from "./rest.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class SaleService {
-  saleChanged: Subject<Sale> = new Subject<Sale>();
-
   private currentSale: Sale;
   private completedSales: Sale[] = [];
   private savedSales: Sale[] = [];
   private saleKey: string = "sale";
 
-  constructor(private itemService: ItemService) {
+  constructor(private itemService: ItemService, private rest: RestService) {
     this.currentSale = this.getMockSale();
   }
 
   getSale(): Sale {
     if (LocalStorageHelper.checkDataByKey(this.saleKey)) {
       const localSale = LocalStorageHelper.getDataByKey(this.saleKey) as Sale;
-      // Implement data retrieving
+      const saleDetails: Array<SaleDetail> = [];
+      localSale.saleDetails.forEach(el => {
+        const saleDetail: SaleDetail = new SaleDetail(
+          el.itemId,
+          el.price,
+          el.quantity,
+          el.discount
+        );
+        saleDetails.push(saleDetail);
+      });
+      this.currentSale.id = localSale.id;
+      this.currentSale.date = localSale.date;
+      this.currentSale.saleDetails = saleDetails;
     } else {
       LocalStorageHelper.setDataByKey(this.saleKey, this.currentSale);
     }
@@ -32,8 +42,32 @@ export class SaleService {
   }
 
   addItemToSale(item: Item) {
-    const newSaleDetail = new SaleDetail(item.id, item.price, 1, 0);
-    this.currentSale.saleDetails.push(newSaleDetail);
+    let currentDetail = this.currentSale.saleDetails.find(
+      sd => sd.itemId == item.id
+    );
+
+    if (currentDetail) {
+      currentDetail.quantity++;
+    } else {
+      const newSaleDetail = new SaleDetail(item.id, item.price, 1, 0);
+      this.currentSale.saleDetails.push(newSaleDetail);
+    }
+
+    LocalStorageHelper.setDataByKey(this.saleKey, this.currentSale);
+  }
+
+  changeItemCountInSale(saleDetail: SaleDetail) {
+    let currentDetail = this.currentSale.saleDetails.find(
+      sd => sd.itemId == saleDetail.itemId
+    );
+    if (saleDetail.quantity > 0) {
+      currentDetail.quantity = saleDetail.quantity;
+    } else {
+      const index = this.currentSale.saleDetails.indexOf(currentDetail);
+      this.currentSale.saleDetails.splice(index, 1);
+    }
+
+    LocalStorageHelper.setDataByKey(this.saleKey, this.currentSale);
   }
 
   moveSavedSaleToCurrent(saleId: number): Sale {
@@ -51,12 +85,35 @@ export class SaleService {
 
   saveSale(sale: Sale): Sale {
     this.savedSales.push(sale);
-    return this.createNewSale();
+    this.currentSale = this.createNewSale();
+
+    LocalStorageHelper.setDataByKey(this.saleKey, this.currentSale);
+
+    return this.currentSale;
   }
 
   completeSale(sale: Sale): Sale {
+    this.rest
+      .postSale(sale)
+      .subscribe(
+        (response: Response) => console.log(response),
+        (error: Response) => console.log(error)
+      );
+
     this.completedSales.push(sale);
-    return this.createNewSale();
+    this.currentSale = this.createNewSale();
+
+    LocalStorageHelper.setDataByKey(this.saleKey, this.currentSale);
+
+    return this.currentSale;
+  }
+
+  clearSaleItems(): Sale {
+    this.currentSale.saleDetails = [];
+
+    LocalStorageHelper.setDataByKey(this.saleKey, this.currentSale);
+
+    return this.currentSale;
   }
 
   private createNewSale(): Sale {

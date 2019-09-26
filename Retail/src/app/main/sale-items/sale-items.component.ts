@@ -11,7 +11,6 @@ import { Message } from "src/app/models/message.model";
 import { Status } from "src/app/models/state.model";
 import { ItemService } from "src/app/services/item.service";
 import { SaleService } from "src/app/services/sale.service";
-import { RestService } from "src/app/services/rest.service";
 import { CommunicationService } from "src/app/services/communication.service";
 
 @Component({
@@ -34,7 +33,6 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
   constructor(
     private saleService: SaleService,
     private itemService: ItemService,
-    private rest: RestService,
     private communicationService: CommunicationService
   ) {
     this.subscription = this.communicationService.saleStatusChanged.subscribe(
@@ -104,13 +102,10 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
     this.communicationService.sendItem(message);
   }
 
-  onAmountChanged(isRemoved: boolean, saleDetail: SaleDetail) {
-    if (isRemoved) {
-      const { saleDetails } = this.sale;
-      const index = saleDetails.indexOf(saleDetail);
-      saleDetails.splice(index, 1);
-      this.communicationService.clearItem();
-    }
+  onAmountChanged(saleDetail: SaleDetail) {
+    this.saleService.changeItemCountInSale(saleDetail);
+
+    this.communicationService.clearItem();
 
     this.updateTotalAmounts();
   }
@@ -128,13 +123,6 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
 
   private completeSale(): void {
     if (this.sale.saleDetails.length > 0) {
-      this.rest
-        .postSale(this.sale)
-        .subscribe(
-          (response: Response) => console.log(response),
-          (error: Response) => console.log(error)
-        );
-
       this.sale = this.saleService.completeSale(this.sale);
 
       this.communicationService.clearItem();
@@ -147,7 +135,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
   }
 
   private clearSale(): void {
-    this.sale.saleDetails = [];
+    this.sale = this.saleService.clearSaleItems();
     this.communicationService.clearItem();
     this.updateTotalAmounts();
   }
