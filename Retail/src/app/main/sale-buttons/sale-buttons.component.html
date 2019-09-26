@@ -29,12 +29,23 @@
   <div class="col-md-6 p-1">
     <button
       type="button"
+      class="btn text-white w-100"
+      style="background-color: #2d39eb"
+      (click)="onNomenclatureClick()"
+    >
+      <i class="fa fa-list mr-2"></i>Nomenclature
+    </button>
+  </div>
+  <div class="col-md-6 p-1"></div>
+  <div class="col-md-6 p-1">
+    <button
+      type="button"
       class="btn btn-secondary w-100"
       data-toggle="modal"
       data-target="#cmptSaleList"
       (click)="onCompleted()"
     >
-      <i class="fa fa-list mr-2"></i>Completed
+      <i class="fa fa-check-circle mr-2"></i>Completed
     </button>
   </div>
   <div class="col-md-6 p-1">
@@ -56,7 +67,7 @@
       data-target="#cmptModal"
       (click)="onSave()"
     >
-      <i class="fa fa-share-square mr-2"></i>Save
+      <i class="fa fa-save mr-2"></i>Save
     </button>
   </div>
   <div class="col-md-6 p-1">

@@ -60,6 +60,11 @@ export class SaleButtonsComponent implements OnDestroy {
     window.open(`#${url.toString()}`, "_blank");
   }
 
+  onNomenclatureClick(): void {
+    const url = this.router.createUrlTree(["/items"]);
+    window.open(`#${url.toString()}`, "_blank");
+  }
+
   onCompleted(): void {
     this.modalDialog = new ModalDialog(
       "CompletedList",

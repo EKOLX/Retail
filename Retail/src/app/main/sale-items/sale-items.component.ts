@@ -26,7 +26,9 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
   totalDiscount: number;
   total: number;
 
-  private subscription: Subscription;
+  private saleStatusChangedSub: Subscription;
+  private saleChangedSub: Subscription;
+  private saleChangedServiceSub: Subscription;
 
   @ViewChild("itemBarcode", { static: false }) itemBarcode: ElementRef;
 
@@ -35,7 +37,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
     private itemService: ItemService,
     private communicationService: CommunicationService
   ) {
-    this.subscription = this.communicationService.saleStatusChanged.subscribe(
+    this.saleStatusChangedSub = this.communicationService.saleStatusChanged.subscribe(
       msg => {
         if (msg) {
           switch (msg.status) {
@@ -52,21 +54,29 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
         }
       }
     );
-    this.communicationService.saleChanged.subscribe(msg => {
-      if (msg.status == Status.isRestored) {
-        if (this.sale.saleDetails.length > 0) {
-          alert("Current sale is not empty.");
-          return;
-        } else {
-          this.saveSale();
-          this.sale = this.saleService.moveSavedSaleToCurrent(msg.saleId);
-          this.updateTotalAmounts();
-          this.communicationService.sendSaleInfo(
-            new Message(null, this.sale.id)
-          );
+    this.saleChangedSub = this.communicationService.saleChanged.subscribe(
+      msg => {
+        if (msg.status == Status.isRestored) {
+          if (this.sale.saleDetails.length > 0) {
+            alert("Current sale is not empty.");
+            return;
+          } else {
+            this.saveSale();
+            this.saleService.moveSavedSaleToCurrent(msg.saleId);
+            this.updateTotalAmounts();
+            this.communicationService.sendSaleInfo(
+              new Message(null, this.sale.id)
+            );
+          }
         }
       }
-    });
+    );
+    this.saleChangedServiceSub = this.saleService.saleChanged.subscribe(
+      sale => {
+        this.sale = sale;
+        this.updateTotalAmounts();
+      }
+    );
 
     this.sale = new Sale(1);
     this.sale.saleDetails = [];
@@ -75,7 +85,6 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sale = this.saleService.getSale();
     this.updateTotalAmounts();
-
     this.communicationService.sendSaleInfo(new Message(null, this.sale.id));
   }
 
@@ -88,7 +97,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
 
     if (!item) {
       alert(
-        `Item with the barcode ${barcode} doesn't exist. You can find valid barcode (e.g. 1234567890) on the item list.`
+        `Item with the barcode ${barcode} doesn't exist. You can find valid barcode (e.g. 1234567890) on the Nomenclature.`
       );
       return;
     }
@@ -112,7 +121,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
 
   private saveSale(): void {
     if (this.sale.saleDetails.length > 0) {
-      this.sale = this.saleService.saveSale(this.sale);
+      this.saleService.saveSale(this.sale);
       this.communicationService.clearItem();
       this.communicationService.sendSaleInfo(new Message(null, this.sale.id));
       this.updateTotalAmounts();
@@ -123,7 +132,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
 
   private completeSale(): void {
     if (this.sale.saleDetails.length > 0) {
-      this.sale = this.saleService.completeSale(this.sale);
+      this.saleService.completeSale(this.sale);
 
       this.communicationService.clearItem();
       this.communicationService.sendSaleInfo(new Message(null, this.sale.id));
@@ -135,7 +144,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
   }
 
   private clearSale(): void {
-    this.sale = this.saleService.clearSaleItems();
+    this.saleService.clearSaleItems();
     this.communicationService.clearItem();
     this.updateTotalAmounts();
   }
@@ -154,6 +163,8 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.saleStatusChangedSub.unsubscribe();
+    this.saleChangedSub.unsubscribe();
+    this.saleChangedServiceSub.unsubscribe();
   }
 }

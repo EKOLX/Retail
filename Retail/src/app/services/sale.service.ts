@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Subject } from "rxjs";
 import { Sale, SaleDetail, Item } from "../models/sale.model";
 import { Status } from "../models/state.model";
 import { LocalStorageHelper } from "../helpers/localStorageHelper";
@@ -9,6 +10,8 @@ import { RestService } from "./rest.service";
   providedIn: "root"
 })
 export class SaleService {
+  saleChanged = new Subject<Sale>();
+
   private currentSale: Sale;
   private completedSales: Sale[] = [];
   private savedSales: Sale[] = [];
@@ -16,6 +19,7 @@ export class SaleService {
 
   constructor(private itemService: ItemService, private rest: RestService) {
     this.currentSale = this.getMockSale();
+    this.saleChanged.next(this.currentSale);
   }
 
   getSale(): Sale {
@@ -31,9 +35,9 @@ export class SaleService {
         );
         saleDetails.push(saleDetail);
       });
-      this.currentSale.id = localSale.id;
-      this.currentSale.date = localSale.date;
-      this.currentSale.saleDetails = saleDetails;
+      // this.currentSale.id = localSale.id;
+      // this.currentSale.date = localSale.date;
+      // this.currentSale.saleDetails = saleDetails;
     } else {
       LocalStorageHelper.setDataByKey(this.saleKey, this.currentSale);
     }
