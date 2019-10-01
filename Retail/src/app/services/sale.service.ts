@@ -42,6 +42,7 @@ export class SaleService {
       LocalStorageHelper.setDataByKey(this.saleKey, this.currentSale);
     }
 
+    // TODO: Return copy not original and handle event on change. Do it in each method
     return this.currentSale;
   }
 
