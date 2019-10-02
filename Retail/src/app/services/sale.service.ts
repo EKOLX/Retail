@@ -5,6 +5,7 @@ import { Status } from "../models/state.model";
 import { LocalStorageHelper } from "../helpers/localStorageHelper";
 import { ItemService } from "./item.service";
 import { RestService } from "./rest.service";
+import { CommonHelper } from "../helpers/commonHelper";
 
 @Injectable({
   providedIn: "root"
@@ -17,6 +18,7 @@ export class SaleService {
   private savedSales: Sale[] = [];
   private saleKey: string = "sale";
 
+  // TODO: Return copy not original and handle event on change. Do it in each method
   constructor(private itemService: ItemService, private rest: RestService) {
     this.currentSale = this.getMockSale();
     this.saleChanged.next(this.currentSale);
@@ -42,8 +44,8 @@ export class SaleService {
       LocalStorageHelper.setDataByKey(this.saleKey, this.currentSale);
     }
 
-    // TODO: Return copy not original and handle event on change. Do it in each method
-    return this.currentSale;
+    const sale = Object.assign({}, this.currentSale);
+    return sale;
   }
 
   addItemToSale(item: Item) {

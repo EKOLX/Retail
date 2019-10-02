@@ -37,6 +37,9 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
     private itemService: ItemService,
     private communicationService: CommunicationService
   ) {
+    this.sale = new Sale(1);
+    this.sale.saleDetails = [];
+
     this.saleStatusChangedSub = this.communicationService.saleStatusChanged.subscribe(
       msg => {
         if (msg) {
@@ -73,19 +76,20 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
     );
     this.saleChangedServiceSub = this.saleService.saleChanged.subscribe(
       sale => {
-        this.sale = sale;
+        //this.sale = sale;
         this.updateTotalAmounts();
       }
     );
-
-    this.sale = new Sale(1);
-    this.sale.saleDetails = [];
   }
 
   ngOnInit() {
     this.sale = this.saleService.getSale();
     this.updateTotalAmounts();
     this.communicationService.sendSaleInfo(new Message(null, this.sale.id));
+  }
+
+  get cursorStyle(): string {
+    return this.itemCode ? "pointer" : "not-allowed";
   }
 
   onItemEnter(event: HTMLInputElement) {

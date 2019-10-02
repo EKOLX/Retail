@@ -5,7 +5,8 @@
         (keyup.enter)="onItemEnter(itemBarcode)" [(ngModel)]="itemCode" />
     </div>
     <div class="col-md-3">
-      <button class="btn btn-secondary w-100" (click)="onItemEnter(itemBarcode)" [disabled]="!itemCode">
+      <button class="btn btn-secondary w-100" [ngStyle]="{cursor: cursorStyle}" (click)="onItemEnter(itemBarcode)"
+        [disabled]="!itemCode">
         ENTER
       </button>
     </div>
