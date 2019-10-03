@@ -76,7 +76,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
     );
     this.saleChangedServiceSub = this.saleService.saleChanged.subscribe(
       sale => {
-        //this.sale = sale;
+        this.sale = sale;
         this.updateTotalAmounts();
       }
     );
@@ -117,9 +117,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
 
   onAmountChanged(saleDetail: SaleDetail) {
     this.saleService.changeItemCountInSale(saleDetail);
-
     this.communicationService.clearItem();
-
     this.updateTotalAmounts();
   }
 
@@ -142,8 +140,6 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
       this.communicationService.sendSaleInfo(new Message(null, this.sale.id));
 
       this.updateTotalAmounts();
-    } else {
-      // TODO: show error message or something else
     }
   }
 

@@ -44,8 +44,7 @@ export class SaleService {
       LocalStorageHelper.setDataByKey(this.saleKey, this.currentSale);
     }
 
-    const sale = Object.assign({}, this.currentSale);
-    return sale;
+    return this.makeSaleCopy();
   }
 
   addItemToSale(item: Item) {
@@ -99,20 +98,19 @@ export class SaleService {
     return this.currentSale;
   }
 
-  completeSale(sale: Sale): Sale {
-    this.rest
-      .postSale(sale)
-      .subscribe(
-        (response: Response) => console.log(response),
-        (error: Response) => console.log(error)
-      );
+  completeSale(sale: Sale): void {
+    this.rest.postSale(sale).subscribe(
+      (response: Response) => {
+        // console.log(response);
+      },
+      (error: Response) => console.log(error)
+    );
 
     this.completedSales.push(sale);
     this.currentSale = this.createNewSale();
 
     LocalStorageHelper.setDataByKey(this.saleKey, this.currentSale);
-
-    return this.currentSale;
+    this.saleChanged.next(this.makeSaleCopy());
   }
 
   clearSaleItems(): Sale {
@@ -121,6 +119,10 @@ export class SaleService {
     LocalStorageHelper.setDataByKey(this.saleKey, this.currentSale);
 
     return this.currentSale;
+  }
+
+  private makeSaleCopy(): Sale {
+    return Object.assign(new Sale(0), this.currentSale);
   }
 
   private createNewSale(): Sale {
