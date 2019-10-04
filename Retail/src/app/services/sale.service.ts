@@ -44,7 +44,7 @@ export class SaleService {
       LocalStorageHelper.setDataByKey(this.saleKey, this.currentSale);
     }
 
-    return this.makeSaleCopy();
+    return this.cloneSale(this.currentSale);
   }
 
   addItemToSale(item: Item) {
@@ -76,11 +76,17 @@ export class SaleService {
     LocalStorageHelper.setDataByKey(this.saleKey, this.currentSale);
   }
 
-  moveSavedSaleToCurrent(saleId: number): Sale {
-    this.currentSale = this.savedSales.find(s => s.id == saleId);
+  moveSavedSaleToCurrent(saleId: number): void {
+    if (this.currentSale.saleDetails.length > 0) {
+      alert("Current sale is not empty.");
+      return;
+    }
+    this.currentSale = this.cloneSale(
+      this.savedSales.find(s => s.id == saleId)
+    );
     const index = this.savedSales.indexOf(this.currentSale);
     this.savedSales.splice(index, 1);
-    return this.currentSale;
+    this.saleChanged.next(this.cloneSale(this.currentSale));
   }
 
   getSalesByStatus(status: Status): Array<Sale> {
@@ -89,13 +95,12 @@ export class SaleService {
     else return null;
   }
 
-  saveSale(sale: Sale): Sale {
+  saveSale(sale: Sale): void {
     this.savedSales.push(sale);
     this.currentSale = this.createNewSale();
 
     LocalStorageHelper.setDataByKey(this.saleKey, this.currentSale);
-
-    return this.currentSale;
+    this.saleChanged.next(this.cloneSale(this.currentSale));
   }
 
   completeSale(sale: Sale): void {
@@ -110,19 +115,18 @@ export class SaleService {
     this.currentSale = this.createNewSale();
 
     LocalStorageHelper.setDataByKey(this.saleKey, this.currentSale);
-    this.saleChanged.next(this.makeSaleCopy());
+    this.saleChanged.next(this.cloneSale(this.currentSale));
   }
 
-  clearSaleItems(): Sale {
+  clearSaleItems(): void {
     this.currentSale.saleDetails = [];
 
     LocalStorageHelper.setDataByKey(this.saleKey, this.currentSale);
-
-    return this.currentSale;
+    this.saleChanged.next(this.cloneSale(this.currentSale));
   }
 
-  private makeSaleCopy(): Sale {
-    return Object.assign(new Sale(0), this.currentSale);
+  private cloneSale(sale: Sale): Sale {
+    return Object.assign(new Sale(0), sale);
   }
 
   private createNewSale(): Sale {

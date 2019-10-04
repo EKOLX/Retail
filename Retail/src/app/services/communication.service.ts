@@ -2,22 +2,17 @@ import { Subject, Observable } from "rxjs";
 import { Message } from "../models/message.model";
 
 export class CommunicationService {
-  saleChanged = new Subject<Message>();
   saleInfoChanged = new Subject<Message>();
-  saleStatusChanged = new Subject<Message>();
+  saleButtonExecuted = new Subject<Message>();
   private itemSubject = new Subject<Message>();
   private modalSubject = new Subject<Message>();
-
-  sendSale(message: Message): void {
-    this.saleChanged.next(message);
-  }
 
   sendSaleInfo(message: Message): void {
     this.saleInfoChanged.next(message);
   }
 
   sendSaleStatus(message: Message): void {
-    this.saleStatusChanged.next(message);
+    this.saleButtonExecuted.next(message);
   }
 
   sendItem(message: Message): void {

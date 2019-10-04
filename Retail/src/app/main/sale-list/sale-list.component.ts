@@ -6,10 +6,8 @@ import {
   Output,
   EventEmitter
 } from "@angular/core";
-import { CommunicationService } from "src/app/services/communication.service";
 import { SaleService } from "src/app/services/sale.service";
 import { Status, ModalDialog, ModalButton } from "src/app/models/state.model";
-import { Message } from "src/app/models/message.model";
 import { Sale } from "src/app/models/sale.model";
 
 @Component({
@@ -22,19 +20,16 @@ export class SaleListComponent implements OnChanges {
   @Output() restoreClicked = new EventEmitter();
 
   sales: Array<Sale> = [];
-  button1: ModalButton;
+  btnRestore: ModalButton;
   private _selectedSaleId: number = 0;
 
-  constructor(
-    private communicationService: CommunicationService,
-    private saleService: SaleService
-  ) {
-    this.button1 = new ModalButton();
+  constructor(private saleService: SaleService) {
+    this.btnRestore = new ModalButton();
   }
 
   set selectedSaleId(value: number) {
     this._selectedSaleId = value;
-    this.button1.enabled = value > 0;
+    this.btnRestore.enabled = value > 0;
   }
   get selectedSaleId(): number {
     return this._selectedSaleId;
@@ -43,12 +38,10 @@ export class SaleListComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const modalDialogInst = changes["modalDialog"].currentValue as ModalDialog;
     if (modalDialogInst.buttons.length > 0) {
-      this.button1 = modalDialogInst.buttons.find(b => b.id == "button1");
-      this.button1.clicked.subscribe(() => {
+      this.btnRestore = modalDialogInst.buttons.find(b => b.id == "button1");
+      this.btnRestore.clicked.subscribe(() => {
         if (modalDialogInst.type == "IncompletedList")
-          this.communicationService.sendSale(
-            new Message(Status.isRestored, this.selectedSaleId)
-          );
+          this.saleService.moveSavedSaleToCurrent(this.selectedSaleId);
       });
     }
     if (modalDialogInst.type == "CompletedList")

@@ -26,8 +26,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
   totalDiscount: number;
   total: number;
 
-  private saleStatusChangedSub: Subscription;
-  private saleChangedSub: Subscription;
+  private saleButtonExecutedSub: Subscription;
   private saleChangedServiceSub: Subscription;
 
   @ViewChild("itemBarcode", { static: false }) itemBarcode: ElementRef;
@@ -40,7 +39,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
     this.sale = new Sale(1);
     this.sale.saleDetails = [];
 
-    this.saleStatusChangedSub = this.communicationService.saleStatusChanged.subscribe(
+    this.saleButtonExecutedSub = this.communicationService.saleButtonExecuted.subscribe(
       msg => {
         if (msg) {
           switch (msg.status) {
@@ -53,23 +52,6 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
             case Status.isRemoved:
               this.clearSale();
               break;
-          }
-        }
-      }
-    );
-    this.saleChangedSub = this.communicationService.saleChanged.subscribe(
-      msg => {
-        if (msg.status == Status.isRestored) {
-          if (this.sale.saleDetails.length > 0) {
-            alert("Current sale is not empty.");
-            return;
-          } else {
-            this.saveSale();
-            this.saleService.moveSavedSaleToCurrent(msg.saleId);
-            this.updateTotalAmounts();
-            this.communicationService.sendSaleInfo(
-              new Message(null, this.sale.id)
-            );
           }
         }
       }
@@ -163,8 +145,7 @@ export class SaleItemsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.saleStatusChangedSub.unsubscribe();
-    this.saleChangedSub.unsubscribe();
+    this.saleButtonExecutedSub.unsubscribe();
     this.saleChangedServiceSub.unsubscribe();
   }
 }
