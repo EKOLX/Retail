@@ -11,7 +11,7 @@
       </button>
     </div>
   </div>
-  <div [@itemRemoval] *ngFor="let saleDetail of sale.saleDetails">
+  <div [@itemAnimation] *ngFor="let saleDetail of sale.saleDetails">
     <app-sale-item [saleDetail]="saleDetail" (amountChanged)="onAmountChanged(saleDetail)">
     </app-sale-item>
   </div>

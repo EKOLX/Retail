@@ -25,7 +25,7 @@ import { CommunicationService } from "src/app/services/communication.service";
   templateUrl: "./sale-items.component.html",
   styleUrls: ["./sale-items.component.sass"],
   animations: [
-    trigger("itemRemoval", [
+    trigger("itemAnimation", [
       state(
         "in",
         style({
