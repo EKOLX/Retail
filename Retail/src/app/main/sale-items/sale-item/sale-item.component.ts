@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { CommunicationService } from "src/app/services/communication.service";
 import { Message } from "src/app/models/message.model";
-import { Sale, Item, SaleDetail } from "src/app/models/sale.model";
+import { Item, SaleDetail } from "src/app/models/sale.model";
+import { CommunicationService } from "src/app/services/communication.service";
 import { ItemService } from "src/app/services/item.service";
 
 @Component({

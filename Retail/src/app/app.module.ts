@@ -3,10 +3,10 @@ import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AngularFontAwesomeModule } from "angular-font-awesome";
 
 import { AppRoutingModule } from "./app-routing.module";
-import { SaleModule } from "./main/sale.module";
 import { AppComponent } from "./app.component";
 import { HomeComponent } from "./main/home.component";
 import { HeaderComponent } from "./main/header/header.component";
@@ -51,7 +51,7 @@ import { FilterPipe } from "./helpers/pipes/filter.pipe";
     HttpClientModule,
     AppRoutingModule,
     AngularFontAwesomeModule,
-    SaleModule
+    BrowserAnimationsModule
   ],
   providers: [CommunicationService, AuthGuard, LockOutGuard],
   bootstrap: [AppComponent]

@@ -11,9 +11,10 @@
       </button>
     </div>
   </div>
-  <app-sale-item *ngFor="let saleDetail of sale.saleDetails" [saleDetail]="saleDetail"
-    (amountChanged)="onAmountChanged(saleDetail)">
-  </app-sale-item>
+  <div [@itemRemoval] *ngFor="let saleDetail of sale.saleDetails">
+    <app-sale-item [saleDetail]="saleDetail" (amountChanged)="onAmountChanged(saleDetail)">
+    </app-sale-item>
+  </div>
   <hr style="border: 1px solid green; border-radius: 2px;" />
   <div class="row">
     <div class="col-md-9">

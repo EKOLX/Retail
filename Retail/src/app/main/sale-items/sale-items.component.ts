@@ -5,6 +5,13 @@ import {
   ViewChild,
   ElementRef
 } from "@angular/core";
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate
+} from "@angular/animations";
 import { Subscription } from "rxjs";
 import { Sale, SaleDetail } from "src/app/models/sale.model";
 import { Message } from "src/app/models/message.model";
@@ -16,7 +23,34 @@ import { CommunicationService } from "src/app/services/communication.service";
 @Component({
   selector: "app-sale-items",
   templateUrl: "./sale-items.component.html",
-  styleUrls: ["./sale-items.component.sass"]
+  styleUrls: ["./sale-items.component.sass"],
+  animations: [
+    trigger("itemRemoval", [
+      state(
+        "in",
+        style({
+          opacity: 1,
+          transform: "translateX(0)"
+        })
+      ),
+      transition("void => *", [
+        style({
+          opacity: 0,
+          transform: "translateX(-100px)"
+        }),
+        animate(300)
+      ]),
+      transition("* => void", [
+        animate(
+          300,
+          style({
+            opacity: 0,
+            transform: "translateX(200px)"
+          })
+        )
+      ])
+    ])
+  ]
 })
 export class SaleItemsComponent implements OnInit, OnDestroy {
   sale: Sale;
