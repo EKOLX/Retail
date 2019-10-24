@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { User } from "../../models/user.model";
-import { SaleService } from "src/app/services/sale.service";
 
 @Component({
   selector: "app-header",
@@ -13,7 +12,7 @@ export class HeaderComponent implements OnInit {
   currentDateTime: Date;
   title: string = "Retail";
 
-  constructor(private saleService: SaleService, private router: Router) {
+  constructor(private router: Router) {
     const user: User = new User("Elkhan", "Mursali");
     this.userFullName = user.fullName;
     this.updateDateTime();
