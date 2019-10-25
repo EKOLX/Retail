@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { Item } from "../models/sale.model";
-import { MathHelper } from "../helpers/mathHelper";
 
 @Injectable({
   providedIn: "root"
